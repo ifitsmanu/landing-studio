@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: Contracts and deterministic evals
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: npm ci
+      - run: npm run validate
+      - run: npm run test:contracts
+      - run: npm run evals
+      - run: npm run motion:check
+
+  browser-smoke:
+    name: Browser and motion smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: npm ci
+      - run: npm --prefix tools/browser-qa ci
+      - run: npm run motion:install
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: npx --prefix tools/browser-qa playwright install --with-deps chromium
+      - run: npm run test:browser
+      - run: npm run test:motion
+      - run: npm run qa:smoke
+      - name: Upload browser evidence on failure
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: browser-qa-evidence
+          path: .landing-studio/evidence/browser-qa-smoke/
+          if-no-files-found: ignore
+          retention-days: 7

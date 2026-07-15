@@ -1,0 +1,34 @@
+name: Showcase
+description: Share a page or section built with Landing Studio and its evidence.
+title: "[Showcase]: "
+labels: [showcase]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Public URL or repository
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Audience, page job, and constraints
+    validations:
+      required: true
+  - type: textarea
+    id: process
+    attributes:
+      label: Skills/runtime used and what changed through section approvals
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Browser, accessibility, performance, and outcome evidence
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Publication rights
+      options:
+        - label: I have permission to share this URL, media, and information publicly.
+          required: true

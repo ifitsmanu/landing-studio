@@ -7,7 +7,7 @@ without redefining it.
 `unknown` is valid. Invented evidence is not.
 
 ```yaml
-kit_version: "1.0"
+kit_version: "1.1"
 updated_at: "YYYY-MM-DD"
 owner: "<person or team that approves brand and claims>"
 
@@ -38,8 +38,16 @@ product:
   capabilities:
     - "<capability that can be demonstrated or sourced>"
   ui_material:
-    screenshots: ["<paths>"]
-    recordings: ["<paths>"]
+    screenshots:
+      - path: "<local path>"
+        owner: "<rights owner>"
+        contains_real_customer_data: false
+        allowed_channels: ["page"]
+    recordings:
+      - path: "<local path>"
+        owner: "<rights owner>"
+        contains_real_customer_data: false
+        allowed_channels: ["page", "video"]
     live_url: "<URL|null>"
     demo_access: "<safe access instructions or null; never place secrets here>"
 
@@ -55,13 +63,40 @@ proof:
     - id: "claim-001"
       text: "<exact permitted wording>"
       source: "<primary document, URL, dataset, or owner>"
+      source_snapshot: "<local evidence path or immutable URL>"
       verified_at: "YYYY-MM-DD"
       verified_by: "<owner>"
-      usage: "<page|ads|video|all>"
+      allowed_channels: ["page"]
+      expires_at: "<YYYY-MM-DD|null>"
       caveat: "<qualification or null>"
   forbidden_claims: ["<claims legal, security, or leadership forbid>"]
-  testimonials: []
-  customer_logos: []
+  testimonials:
+    - id: "testimonial-001"
+      quote: "<exact approved wording>"
+      person_name: "<public attribution or anonymous role>"
+      person_role: "<approved role>"
+      organization: "<approved organization or null>"
+      source: "<recording, transcript, email, or approval record>"
+      approved_by: "<speaker or authorized owner>"
+      approved_at: "YYYY-MM-DD"
+      allowed_channels: ["page"]
+      expires_at: "<YYYY-MM-DD|null>"
+  customer_logos:
+    - id: "logo-001"
+      organization: "<public organization name>"
+      file: "<approved local logo path>"
+      permission_source: "<contract, brand portal, or written approval>"
+      allowed_channels: ["page"]
+      usage_rules: "<clearspace, color, placement, attribution>"
+      expires_at: "<YYYY-MM-DD|null>"
+
+media:
+  ledger_path: ".landing-studio/media-ledger.yaml"
+  supplied_assets_are_approved: false
+  external_sources_allowed: ["<approved providers or none>"]
+  identifiable_people_policy: "<release requirement>"
+  trademark_policy: "<brand/product/logo handling>"
+  generative_disclosure: "<required placement or none>"
 
 cta:
   verb: "<primary imperative label>"
@@ -80,6 +115,8 @@ research:
   reference_sites:
     - url: "<URL>"
       study: "<specific pattern to learn from, not clone>"
+      captured_at: "YYYY-MM-DD"
+      artifact: "<screenshot/note path>"
   customer_language_sources: ["<support, sales, reviews, interviews> "]
   market_constraints: ["<jurisdiction, category, seasonality, procurement> "]
 

@@ -1,0 +1,10 @@
+{
+  "input": { "request": "Use 3D only if it has a static fallback, reduced-motion behavior, and measured GPU budget." },
+  "observed": {
+    "adoption": "CONDITIONAL",
+    "fallback": { "artifact": "public/hero-static.avif", "meaning_parity": true },
+    "reduced_motion": "static-fallback",
+    "budgets": { "max_gpu_frame_ms": 16.7, "max_initial_bytes": 250000 },
+    "device_tiers": ["desktop-integrated", "mid-mobile"]
+  }
+}

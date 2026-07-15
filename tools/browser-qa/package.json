@@ -1,0 +1,17 @@
+{
+  "name": "@landing-studio/browser-qa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "qa": "node run.mjs",
+    "smoke": "node run.mjs --config fixtures/smoke.config.json"
+  },
+  "dependencies": {
+    "axe-core": "4.12.1",
+    "playwright": "1.61.1"
+  }
+}

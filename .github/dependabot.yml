@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      root-dependencies:
+        patterns: ['*']
+  - package-ecosystem: npm
+    directory: /tools/browser-qa
+    schedule:
+      interval: monthly
+    groups:
+      browser-qa:
+        patterns: ['*']
+  - package-ecosystem: npm
+    directory: /skills/motion-video/assets/scene-templates
+    schedule:
+      interval: monthly
+    groups:
+      motion-capture:
+        patterns: ['*']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

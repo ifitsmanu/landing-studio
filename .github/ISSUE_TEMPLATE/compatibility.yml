@@ -1,0 +1,33 @@
+name: Runtime compatibility report
+description: Report a verified install, activation, or capability result for an agent runtime.
+title: "[Compatibility]: "
+labels: [compatibility]
+body:
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime and exact version
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Operating system and architecture
+    validations:
+      required: true
+  - type: textarea
+    id: install
+    attributes:
+      label: Installation and verification commands
+    validations:
+      required: true
+  - type: textarea
+    id: results
+    attributes:
+      label: Discovery, explicit activation, implicit activation, scripts, browser, and subagent results
+    validations:
+      required: true
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Sanitized logs or retained artifacts

@@ -1,0 +1,52 @@
+{
+  "name": "landing-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portable, evidence-first Agent Skills for landing-page research, creative direction, copy, implementation, media, motion, 3D, browser QA, and adversarial review.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "validate": "node scripts/validate-repo.mjs",
+    "test": "npm run test:contracts",
+    "test:all": "node --test tests/*.test.mjs",
+    "test:contracts": "node --test tests/install.test.mjs tests/studio-state.test.mjs tests/validator.test.mjs",
+    "test:browser": "node --test tests/browser-qa.test.mjs",
+    "test:motion": "node --test tests/motion-video.test.mjs",
+    "evals": "node scripts/run-evals.mjs",
+    "qa:install": "npm --prefix tools/browser-qa ci && npx --prefix tools/browser-qa playwright install chromium",
+    "qa:smoke": "node tools/browser-qa/run.mjs --config tools/browser-qa/fixtures/smoke.config.json",
+    "qa:release": "node tools/browser-qa/run.mjs --fixture positive --browser chromium,webkit --out .landing-studio/evidence/browser-qa-release --run-id browser-qa-release --section-id fixture --commit release-candidate",
+    "motion:install": "npm --prefix skills/motion-video/assets/scene-templates ci",
+    "motion:check": "npm --prefix skills/motion-video/assets/scene-templates run check",
+    "motion:smoke": "npm --prefix skills/motion-video/assets/scene-templates run smoke",
+    "metadata": "node scripts/generate-openai-metadata.mjs",
+    "release:check": "npm run validate && npm run test:all && npm run evals && npm run motion:check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ifitsmanu/landing-studio.git"
+  },
+  "homepage": "https://github.com/ifitsmanu/landing-studio#readme",
+  "bugs": {
+    "url": "https://github.com/ifitsmanu/landing-studio/issues"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "agent-skills",
+    "landing-page",
+    "copywriting",
+    "creative-direction",
+    "browser-qa",
+    "webgl",
+    "seo",
+    "aeo",
+    "geo",
+    "conversion"
+  ],
+  "dependencies": {
+    "ajv": "8.20.0",
+    "yaml": "2.9.0"
+  }
+}

@@ -1,0 +1,24 @@
+schema_version: 1.0.0
+run_id: ls_0000000000000000
+page_id: home
+created_at: 2026-07-15T12:00:00.000Z
+audience: The narrow buyer or user this page serves
+page_job: Move a qualified visitor to one defensible next action
+incoming_promise: The query, channel, or campaign promise that brought them here
+awareness_state: Problem aware
+business_outcome: Qualified conversion
+primary_cta:
+  label: Start
+  destination: /start
+thesis: A concrete, differentiated reason to act
+proof_ids: []
+objections:
+  - Why should I trust this?
+constraints:
+  - Preserve accessibility and performance budgets
+sections:
+  - id: hero
+    title: Hero
+    job: Establish fit, value, proof, and the primary action
+    acceptance: A qualified visitor can explain the offer and choose the CTA
+unknowns: []

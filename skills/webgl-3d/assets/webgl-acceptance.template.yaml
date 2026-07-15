@@ -1,0 +1,80 @@
+schema_version: "1.0"
+active_scope:
+  page: ""
+  section_id: ""
+proof_objective: ""
+why_static_is_insufficient: ""
+selected_lane: "static | model-viewer | threejs | react-three-fiber | custom-shader"
+technology_decision_id: ""
+media_ledger_ids: []
+targets:
+  - device: ""
+    browser_and_version: ""
+    viewport: ""
+    network_profile: ""
+applied_budgets:
+  poster_transfer_bytes: null
+  activated_3d_transfer_bytes: null
+  rendered_triangles: null
+  draw_calls: null
+  estimated_decoded_texture_bytes: null
+  maximum_texture_dimension_px: null
+  device_pixel_ratio_cap: null
+  frame_time_p75_ms: null
+  frame_time_p95_ms: null
+  recurring_long_task_limit_ms: 50
+static_contract:
+  semantic_content_present: false
+  fallback_path: ""
+  fallback_content_hash: "sha256:"
+  scripts_disabled_result: ""
+asset_inventory:
+  compressed_transfer_bytes: null
+  triangles: null
+  vertices: null
+  draw_calls: null
+  materials: null
+  textures: []
+  estimated_decoded_texture_bytes: null
+  animation_clips: []
+runtime_measurements:
+  production_bundle_delta_bytes: null
+  first_runtime_request_trigger: ""
+  page_lcp_baseline_ms: null
+  page_lcp_candidate_ms: null
+  frame_time_samples_ms: []
+  frame_time_p75_ms: null
+  frame_time_p95_ms: null
+  recurring_long_tasks: []
+  renderer_info_samples: []
+  trace_paths: []
+budget_results:
+  transfer: "NOT_RUN"
+  geometry_and_draw_calls: "NOT_RUN"
+  textures: "NOT_RUN"
+  frame_time: "NOT_RUN"
+  main_thread: "NOT_RUN"
+  page_lcp: "NOT_RUN"
+behavior_checks:
+  keyboard_and_focus: "NOT_RUN"
+  touch_and_pointer: "NOT_RUN"
+  reduced_motion: "NOT_RUN"
+  offscreen_and_hidden_pause: "NOT_RUN"
+  resize_and_orientation: "NOT_RUN"
+  mount_unmount_cleanup: "NOT_RUN"
+  webgl_unavailable: "NOT_RUN"
+  forced_context_loss: "NOT_RUN"
+  context_restore_or_static_settle: "NOT_RUN"
+  payload_failure: "NOT_RUN"
+evidence:
+  screenshots: []
+  browser_traces: []
+  console_and_network_logs: []
+  limitations: []
+decision:
+  status: "PROTOTYPE_ONLY"
+  budget_exceptions: []
+  named_owner: ""
+  accepted_by: null
+  rationale: ""
+  red_team_report: null

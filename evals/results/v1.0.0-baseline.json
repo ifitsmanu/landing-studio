@@ -1,0 +1,518 @@
+{
+  "suite_version": "1.0.0",
+  "generated_at": "2026-07-15T14:40:00.000Z",
+  "repository_revision": "working-tree:cde84a2",
+  "runner": "scripts/run-evals.mjs",
+  "summary": {
+    "status": "PASS",
+    "passed": 9,
+    "failed": 0,
+    "total": 9,
+    "score": 83,
+    "max_score": 83
+  },
+  "cases": [
+    {
+      "id": "activation-full-studio",
+      "status": "PASS",
+      "score": 9,
+      "max_score": 9,
+      "assertions": [
+        {
+          "id": "director",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": "landing-page-build"
+        },
+        {
+          "id": "specialists",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": [
+            "landing-research",
+            "creative-direction",
+            "landing-copywriter",
+            "landing-page-design",
+            "landing-page-implementation",
+            "landing-page-qa",
+            "landing-red-team"
+          ]
+        },
+        {
+          "id": "section-scope",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": "one-section-at-a-time"
+        }
+      ]
+    },
+    {
+      "id": "nonactivation-narrow-copy",
+      "status": "PASS",
+      "score": 8,
+      "max_score": 8,
+      "assertions": [
+        {
+          "id": "narrow-route",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": [
+            "landing-copywriter"
+          ]
+        },
+        {
+          "id": "no-studio-state",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": false
+        },
+        {
+          "id": "avoid-heavy-skills",
+          "status": "PASS",
+          "severity": "P2",
+          "weight": 2,
+          "actual": [
+            "landing-page-build",
+            "motion-video",
+            "webgl-3d"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "orchestration-one-section",
+      "status": "PASS",
+      "score": 9,
+      "max_score": 9,
+      "assertions": [
+        {
+          "id": "active-only",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": [
+            "hero"
+          ]
+        },
+        {
+          "id": "direction-approved",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": "direction_approved"
+        },
+        {
+          "id": "downstream-queued",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": "queued"
+        }
+      ]
+    },
+    {
+      "id": "claims-integrity",
+      "status": "PASS",
+      "score": 10,
+      "max_score": 10,
+      "assertions": [
+        {
+          "id": "ledger-schema",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": {
+            "valid": true,
+            "errors": []
+          }
+        },
+        {
+          "id": "verified-publishes",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": [
+            "claim-verified"
+          ]
+        },
+        {
+          "id": "unknown-blocked",
+          "status": "PASS",
+          "severity": "P0",
+          "weight": 4,
+          "actual": [
+            "claim-unknown"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-approval-lock",
+      "status": "PASS",
+      "score": 9,
+      "max_score": 9,
+      "assertions": [
+        {
+          "id": "preapproval-block",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": "DIRECTION_APPROVAL_REQUIRED"
+        },
+        {
+          "id": "postapproval-allowed",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": true
+        },
+        {
+          "id": "downstream-stale",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": true
+        }
+      ]
+    },
+    {
+      "id": "media-rights-block",
+      "status": "PASS",
+      "score": 11,
+      "max_score": 11,
+      "assertions": [
+        {
+          "id": "ledger-schema",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": {
+            "valid": true,
+            "errors": []
+          }
+        },
+        {
+          "id": "pending-excluded",
+          "status": "PASS",
+          "severity": "P0",
+          "weight": 4,
+          "actual": [
+            "asset-cleared"
+          ]
+        },
+        {
+          "id": "release-blocked",
+          "status": "PASS",
+          "severity": "P0",
+          "weight": 4,
+          "actual": "BLOCK"
+        }
+      ]
+    },
+    {
+      "id": "browser-evidence-contract",
+      "status": "PASS",
+      "score": 9,
+      "max_score": 9,
+      "assertions": [
+        {
+          "id": "report-schema",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": {
+            "valid": true,
+            "errors": []
+          }
+        },
+        {
+          "id": "three-engines",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": [
+            {
+              "id": "chromium-desktop",
+              "name": "chromium",
+              "browser": "chromium",
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "preferences": {
+                "colorScheme": "light",
+                "reducedMotion": "no-preference"
+              },
+              "journey": {
+                "passed": true,
+                "steps": [
+                  {
+                    "name": "primary-cta",
+                    "passed": true
+                  }
+                ],
+                "error": null
+              },
+              "accessibility": {
+                "url": "http://127.0.0.1:4173/",
+                "violations": [],
+                "blocking_violations": 0
+              },
+              "console": {
+                "messages": [],
+                "errors": [],
+                "pageErrors": []
+              },
+              "network": {
+                "failed": [],
+                "failed_first_party": []
+              },
+              "evidence": {
+                "viewport": {
+                  "width": 1440,
+                  "height": 900
+                },
+                "screenshots": [
+                  "chromium-viewport.png",
+                  "chromium-full.png",
+                  "chromium-section.png",
+                  "chromium-journey.png"
+                ],
+                "trace": "chromium-trace.zip",
+                "missing": [],
+                "section_screenshot_count": 1,
+                "journey_screenshot_count": 1
+              },
+              "blockers": []
+            },
+            {
+              "id": "firefox-mobile",
+              "name": "firefox",
+              "browser": "firefox",
+              "viewport": {
+                "width": 390,
+                "height": 844
+              },
+              "preferences": {
+                "colorScheme": "light",
+                "reducedMotion": "no-preference"
+              },
+              "journey": {
+                "passed": true,
+                "steps": [
+                  {
+                    "name": "primary-cta",
+                    "passed": true
+                  }
+                ],
+                "error": null
+              },
+              "accessibility": {
+                "url": "http://127.0.0.1:4173/",
+                "violations": [],
+                "blocking_violations": 0
+              },
+              "console": {
+                "messages": [],
+                "errors": [],
+                "pageErrors": []
+              },
+              "network": {
+                "failed": [],
+                "failed_first_party": []
+              },
+              "evidence": {
+                "viewport": {
+                  "width": 390,
+                  "height": 844
+                },
+                "screenshots": [
+                  "firefox-viewport.png",
+                  "firefox-full.png",
+                  "firefox-section.png",
+                  "firefox-journey.png"
+                ],
+                "trace": "firefox-trace.zip",
+                "missing": [],
+                "section_screenshot_count": 1,
+                "journey_screenshot_count": 1
+              },
+              "blockers": []
+            },
+            {
+              "id": "webkit-reduced",
+              "name": "webkit",
+              "browser": "webkit",
+              "viewport": {
+                "width": 1440,
+                "height": 900
+              },
+              "preferences": {
+                "colorScheme": "light",
+                "reducedMotion": "reduce"
+              },
+              "journey": {
+                "passed": true,
+                "steps": [
+                  {
+                    "name": "primary-cta",
+                    "passed": true
+                  }
+                ],
+                "error": null
+              },
+              "accessibility": {
+                "url": "http://127.0.0.1:4173/",
+                "violations": [],
+                "blocking_violations": 0
+              },
+              "console": {
+                "messages": [],
+                "errors": [],
+                "pageErrors": []
+              },
+              "network": {
+                "failed": [],
+                "failed_first_party": []
+              },
+              "evidence": {
+                "viewport": {
+                  "width": 1440,
+                  "height": 900
+                },
+                "screenshots": [
+                  "webkit-viewport.png",
+                  "webkit-full.png",
+                  "webkit-section.png",
+                  "webkit-journey.png"
+                ],
+                "trace": "webkit-trace.zip",
+                "missing": [],
+                "section_screenshot_count": 1,
+                "journey_screenshot_count": 1
+              },
+              "blockers": []
+            }
+          ]
+        },
+        {
+          "id": "evidence-pass",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "webgl-fallback-budget",
+      "status": "PASS",
+      "score": 8,
+      "max_score": 8,
+      "assertions": [
+        {
+          "id": "fallback",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": "public/hero-static.avif"
+        },
+        {
+          "id": "reduced-motion",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": "static-fallback"
+        },
+        {
+          "id": "gpu-budget",
+          "status": "PASS",
+          "severity": "P2",
+          "weight": 2,
+          "actual": 16.7
+        }
+      ]
+    },
+    {
+      "id": "red-team-p1-block",
+      "status": "PASS",
+      "score": 10,
+      "max_score": 10,
+      "assertions": [
+        {
+          "id": "report-schema",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": {
+            "valid": true,
+            "errors": []
+          }
+        },
+        {
+          "id": "fresh-context",
+          "status": "PASS",
+          "severity": "P1",
+          "weight": 3,
+          "actual": true
+        },
+        {
+          "id": "blocking-decision",
+          "status": "PASS",
+          "severity": "P0",
+          "weight": 4,
+          "actual": "BLOCK"
+        }
+      ]
+    }
+  ],
+  "cross_model_runs": [
+    {
+      "runtime": "Codex",
+      "model": "unassigned",
+      "status": "unrun",
+      "evidence_path": null,
+      "note": "No retained clean-context model run."
+    },
+    {
+      "runtime": "Claude Code",
+      "model": "unassigned",
+      "status": "unrun",
+      "evidence_path": null,
+      "note": "No retained clean-context model run."
+    },
+    {
+      "runtime": "Gemini CLI",
+      "model": "unassigned",
+      "status": "unrun",
+      "evidence_path": null,
+      "note": "No retained clean-context model run."
+    },
+    {
+      "runtime": "GitHub Copilot",
+      "model": "unassigned",
+      "status": "unrun",
+      "evidence_path": null,
+      "note": "No retained clean-context model run."
+    },
+    {
+      "runtime": "OpenCode",
+      "model": "unassigned",
+      "status": "unrun",
+      "evidence_path": null,
+      "note": "No retained clean-context model run."
+    },
+    {
+      "runtime": "Cursor",
+      "model": "unassigned",
+      "status": "unrun",
+      "evidence_path": null,
+      "note": "No retained clean-context model run."
+    }
+  ]
+}

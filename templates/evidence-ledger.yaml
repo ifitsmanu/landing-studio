@@ -1,0 +1,15 @@
+schema_version: 1.0.0
+run_id: ls_0000000000000000
+section_id: hero
+entries:
+  - id: claim-1
+    statement_or_asset: Replace with a sourced product fact or explicit unknown
+    status: UNKNOWN
+    source: replace-with-source-or-owner
+    accessed: 2026-01-01
+    owner: replace-with-owner
+    approved_by: replace-with-approver
+    approved_at: 2026-01-01T00:00:00.000Z
+    allowed_use:
+      - internal-only
+    caveat: Not approved for public copy until verified

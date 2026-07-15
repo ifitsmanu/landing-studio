@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If Landing Studio contributes to your work, cite the repository and release."
+title: "Landing Studio"
+type: software
+authors:
+  - alias: ifitsmanu
+repository-code: "https://github.com/ifitsmanu/landing-studio"
+url: "https://github.com/ifitsmanu/landing-studio"
+license: Apache-2.0
+version: 1.0.0
+date-released: 2026-07-15
+keywords:
+  - agent skills
+  - landing pages
+  - conversion copywriting
+  - browser quality assurance
+  - creative direction

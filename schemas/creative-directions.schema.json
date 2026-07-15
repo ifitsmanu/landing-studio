@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ifitsmanu.github.io/landing-studio/schemas/creative-directions.schema.json",
+  "title": "Landing Studio approved creative directions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "section_id", "territories", "pairwise_audit", "selected_territory_id", "selected_by", "selected_at"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "section_id": { "type": "string", "minLength": 1 },
+    "territories": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "governing_idea", "proof_claim_ids", "responsive_behavior", "motion_and_static_behavior", "media_asset_ids", "dependency_ids"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "governing_idea": { "type": "string", "minLength": 1 },
+          "proof_claim_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "responsive_behavior": { "type": "string", "minLength": 1 },
+          "motion_and_static_behavior": { "type": "string", "minLength": 1 },
+          "media_asset_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "dependency_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        }
+      }
+    },
+    "pairwise_audit": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["left", "right", "difference", "pass"],
+        "properties": {
+          "left": { "type": "string", "minLength": 1 },
+          "right": { "type": "string", "minLength": 1 },
+          "difference": { "type": "string", "minLength": 1 },
+          "pass": { "const": true }
+        }
+      }
+    },
+    "selected_territory_id": { "type": "string", "minLength": 1 },
+    "selected_by": { "type": "string", "minLength": 1 },
+    "selected_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T" }
+  }
+}

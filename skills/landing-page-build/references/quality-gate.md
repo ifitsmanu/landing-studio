@@ -6,8 +6,6 @@ not replace visual, keyboard, content, privacy, and conversion review.
 ## Decision
 
 - `SHIP`: zero open P0/P1, primary conversion verified, evidence and approvals complete.
-- `CONDITIONAL`: zero open P0/P1; a named non-blocking external dependency or explicitly accepted P2
-  remains with owner, mitigation, and deadline.
 - `BLOCK`: material false claim, privacy/security exposure, unavailable page, broken or inaccessible
   primary journey, or any unresolved P0/P1.
 
@@ -138,7 +136,7 @@ not replace visual, keyboard, content, privacy, and conversion review.
 ## Final record
 
 ```markdown
-Decision: SHIP | CONDITIONAL | BLOCK
+Decision: SHIP | BLOCK
 Candidate:
 Evidence bundle:
 Open P0/P1:

@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify immutable tag
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: npm ci
+      - run: npm run motion:install
+      - run: npm --prefix tools/browser-qa ci
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: npx --prefix tools/browser-qa playwright install --with-deps chromium webkit
+      - run: npm run release:check
+      - run: npm run qa:release
+      - name: Verify tag matches package version
+        run: test "${GITHUB_REF_NAME}" = "v$(node -p "require('./package.json').version")"
+      - name: Build source archive and checksums
+        run: |
+          mkdir -p dist
+          git archive --format=tar.gz --prefix="landing-studio-${GITHUB_REF_NAME}/" -o "dist/landing-studio-${GITHUB_REF_NAME}.tar.gz" "${GITHUB_REF_NAME}"
+          git archive --format=zip --prefix="landing-studio-${GITHUB_REF_NAME}/" -o "dist/landing-studio-${GITHUB_REF_NAME}.zip" "${GITHUB_REF_NAME}"
+          cd dist
+          sha256sum * > SHA256SUMS
+      - name: Retain verified release assets
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-assets-${{ github.ref_name }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish verified assets
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write # zizmor: ignore[undocumented-permissions] -- gh creates the release after read-only verification.
+    environment: release
+    steps:
+      - name: Download verified release assets
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: release-assets-${{ github.ref_name }}
+          path: dist
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release create "${GITHUB_REF_NAME}" dist/* --verify-tag --generate-notes --title "Landing Studio ${GITHUB_REF_NAME}"

@@ -1,0 +1,8 @@
+{
+  "input": { "request": "Implement before approval, then approve, then reject the upstream direction." },
+  "observed": {
+    "before_approval": { "allowed": false, "error_code": "DIRECTION_APPROVAL_REQUIRED" },
+    "after_approval": { "allowed": true, "stage": "implemented" },
+    "after_rejection": { "section_stale": true, "downstream_stale": true }
+  }
+}

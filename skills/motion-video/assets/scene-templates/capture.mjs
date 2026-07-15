@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 /**
- * Deterministic frame capture for the Landing Studio scene templates.
+ * Deterministic frame capture for Landing Studio scene templates and live URLs.
  *
  * Usage:
  *   node capture.mjs --url <file.html|https://...> --out <dir>
- *     [--fps 30] [--duration 8] [--width 1920] [--height 1080]
- *     [--scale 2] [--mode seek|vtime] [--wait-selector <css>]
- *     [--timeout 30000]
+ *     --poster-time <seconds> [--fps 30] [--duration 8]
+ *     [--width 1920] [--height 1080] [--scale 1]
+ *     [--mode seek|vtime] [--wait-selector <css>]
+ *     [--timeout 30000] [--frame-timeout 5000]
  */
 import { chromium } from 'playwright';
-import { mkdirSync, readdirSync } from 'node:fs';
+import { PNG } from 'pngjs';
+import { copyFileSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 
@@ -33,10 +35,11 @@ function parseArgs(argv) {
   return result;
 }
 
-function positiveNumber(value, name, fallback, { integer = false } = {}) {
+function numberOption(value, name, fallback, { integer = false, allowZero = false } = {}) {
   const parsed = Number(value ?? fallback);
-  if (!Number.isFinite(parsed) || parsed <= 0 || (integer && !Number.isInteger(parsed))) {
-    fail(`--${name} must be a positive ${integer ? 'integer' : 'number'}`);
+  const validSign = allowZero ? parsed >= 0 : parsed > 0;
+  if (!Number.isFinite(parsed) || !validSign || (integer && !Number.isInteger(parsed))) {
+    fail(`--${name} must be a ${allowZero ? 'non-negative' : 'positive'} ${integer ? 'integer' : 'number'}`);
   }
   return parsed;
 }
@@ -49,19 +52,70 @@ function normalizeUrl(input) {
   return `${pathToFileURL(resolve(pathname)).href}${suffix}`;
 }
 
-const args = parseArgs(process.argv.slice(2));
-if (!args.url || !args.out) {
-  fail('usage: node capture.mjs --url <file|url> --out <dir> [--fps N] [--duration S]');
+function inspectPoster(buffer) {
+  const png = PNG.sync.read(buffer);
+  let min = 255;
+  let max = 0;
+  for (let index = 0; index < png.data.length; index += 4) {
+    const luminance = Math.round(
+      png.data[index] * 0.2126 + png.data[index + 1] * 0.7152 + png.data[index + 2] * 0.0722,
+    );
+    min = Math.min(min, luminance);
+    max = Math.max(max, luminance);
+  }
+  const luminanceRange = max - min;
+  return { nonblank: luminanceRange >= 8, luminanceRange, minimumLuminance: min, maximumLuminance: max };
 }
 
-const fps = positiveNumber(args.fps, 'fps', 30);
-const duration = positiveNumber(args.duration, 'duration', 8);
-const width = positiveNumber(args.width, 'width', 1920, { integer: true });
-const height = positiveNumber(args.height, 'height', 1080, { integer: true });
-const scale = positiveNumber(args.scale, 'scale', 2);
-const timeout = positiveNumber(args.timeout, 'timeout', 30000, { integer: true });
+async function setAnimationTime(page, timeMs) {
+  await page.evaluate((time) => {
+    document.documentElement.classList.add('play');
+    for (const animation of document.getAnimations({ subtree: true })) {
+      animation.pause();
+      animation.currentTime = time;
+    }
+  }, timeMs);
+}
+
+async function advanceVirtualTime(cdp, budget, timeout) {
+  let timer;
+  let handler;
+  const expired = new Promise((resolveExpired, rejectExpired) => {
+    handler = () => {
+      clearTimeout(timer);
+      resolveExpired();
+    };
+    cdp.once('Emulation.virtualTimeBudgetExpired', handler);
+    timer = setTimeout(() => {
+      cdp.off('Emulation.virtualTimeBudgetExpired', handler);
+      rejectExpired(new Error(`virtual-time frame did not advance within ${timeout}ms`));
+    }, timeout);
+  });
+  await cdp.send('Emulation.setVirtualTimePolicy', { policy: 'advance', budget });
+  await expired;
+}
+
+const args = parseArgs(process.argv.slice(2));
+if (!args.url || !args.out) {
+  fail('usage: node capture.mjs --url <file|url> --out <dir> --poster-time <seconds>');
+}
+if (args['poster-time'] === undefined) {
+  fail('--poster-time is required so the static/reduced-motion frame is intentional');
+}
+
+const fps = numberOption(args.fps, 'fps', 30);
+const duration = numberOption(args.duration, 'duration', 8);
+const width = numberOption(args.width, 'width', 1920, { integer: true });
+const height = numberOption(args.height, 'height', 1080, { integer: true });
+const scale = numberOption(args.scale, 'scale', 1, { integer: true });
+const timeout = numberOption(args.timeout, 'timeout', 30000, { integer: true });
+const frameTimeout = numberOption(args['frame-timeout'], 'frame-timeout', 5000, { integer: true });
+const posterTime = numberOption(args['poster-time'], 'poster-time', undefined, { allowZero: true });
 const mode = args.mode ?? 'seek';
 if (!['seek', 'vtime'].includes(mode)) fail('--mode must be seek or vtime');
+if (width % 2 !== 0 || height % 2 !== 0) fail('--width and --height must be even for yuv420p encoding');
+if (scale > 3) fail('--scale must be between 1 and 3');
+if (posterTime > duration) fail(`--poster-time (${posterTime}s) exceeds --duration (${duration}s)`);
 
 const total = Math.round(duration * fps);
 if (total < 1) fail('--duration and --fps must produce at least one frame');
@@ -76,6 +130,9 @@ if (existingFrames.length > 0) {
 }
 
 const browser = await chromium.launch();
+let posterInspection;
+let actualPosterTime = posterTime;
+let captureError;
 try {
   const page = await browser.newPage({
     viewport: { width, height },
@@ -85,58 +142,62 @@ try {
   page.setDefaultTimeout(timeout);
   page.setDefaultNavigationTimeout(timeout);
 
-  let cdp;
-  if (mode === 'vtime') {
-    cdp = await page.context().newCDPSession(page);
-    await cdp.send('Emulation.setVirtualTimePolicy', {
-      policy: 'pauseIfNetworkFetchesPending',
-      budget: 5000,
-    });
-  }
-
-  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout });
   try {
-    await page.waitForLoadState('networkidle', { timeout });
+    await page.waitForLoadState('networkidle', { timeout: Math.min(timeout, 5000) });
   } catch {
-    console.warn(`capture: network did not become idle within ${timeout}ms; continuing after DOM load`);
+    console.warn('capture: network did not become idle; continuing after DOM load');
   }
   await page.evaluate(() => document.fonts.ready);
-  if (args['wait-selector']) await page.waitForSelector(args['wait-selector']);
+  if (args['wait-selector']) await page.waitForSelector(args['wait-selector'], { timeout });
 
   if (mode === 'seek') {
-    await page.evaluate(() => {
-      document.documentElement.classList.add('play');
-      for (const animation of document.getAnimations({ subtree: true })) {
-        animation.pause();
-        animation.currentTime = 0;
-      }
-    });
-
+    await setAnimationTime(page, 0);
     for (let frame = 0; frame < total; frame += 1) {
-      await page.evaluate((time) => {
-        for (const animation of document.getAnimations({ subtree: true })) {
-          animation.pause();
-          animation.currentTime = time;
-        }
-      }, frame * frameMs);
+      await setAnimationTime(page, frame * frameMs);
       await page.screenshot({ path: `${args.out}/frame_${pad(frame)}.png` });
     }
+    await setAnimationTime(page, posterTime * 1000);
+    const poster = await page.screenshot({ path: `${args.out}/poster.png` });
+    posterInspection = inspectPoster(poster);
   } else {
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Emulation.setVirtualTimePolicy', { policy: 'pause' });
+    await page.evaluate(() => document.documentElement.classList.add('play'));
+    const posterFrame = Math.min(total - 1, Math.round(posterTime * fps));
+    actualPosterTime = posterFrame / fps;
     for (let frame = 0; frame < total; frame += 1) {
-      const expired = new Promise((resolveExpired) => {
-        cdp.once('Emulation.virtualTimeBudgetExpired', resolveExpired);
-      });
-      await cdp.send('Emulation.setVirtualTimePolicy', {
-        policy: 'advance',
-        budget: frameMs,
-      });
-      await expired;
+      if (frame > 0) await advanceVirtualTime(cdp, frameMs, frameTimeout);
       await page.screenshot({ path: `${args.out}/frame_${pad(frame)}.png` });
     }
+    const posterSource = `${args.out}/frame_${pad(posterFrame)}.png`;
+    copyFileSync(posterSource, `${args.out}/poster.png`);
+    // Inspect the selected file, not whichever virtual-time frame is currently visible.
+    posterInspection = inspectPoster(readFileSync(posterSource));
   }
+} catch (error) {
+  captureError = error;
 } finally {
   await browser.close();
 }
+if (captureError) fail(captureError.message);
 
-console.log(`${total} frames -> ${args.out}/`);
-console.log(`Encode: ./encode.sh ${args.out} ${fps} dist/scene`);
+if (!posterInspection.nonblank) {
+  fail(`poster at ${actualPosterTime}s is visually blank (luminance range ${posterInspection.luminanceRange}); choose a visible --poster-time`);
+}
+
+const metadata = {
+  schemaVersion: 1,
+  source: url,
+  mode,
+  fps,
+  durationSeconds: duration,
+  frameCount: total,
+  logicalViewport: { width, height },
+  output: { width: width * scale, height: height * scale, scale },
+  poster: { timeSeconds: actualPosterTime, file: 'poster.png', ...posterInspection },
+};
+writeFileSync(`${args.out}/capture-metadata.json`, `${JSON.stringify(metadata, null, 2)}\n`);
+
+console.log(`${total} frames + poster.png -> ${args.out}/`);
+console.log(`Encode: ./encode.sh ${args.out} ${fps} dist/master --poster ${args.out}/poster.png`);

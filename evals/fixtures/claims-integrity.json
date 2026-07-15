@@ -1,0 +1,16 @@
+{
+  "input": { "request": "Publish both the sourced conversion claim and an owner's unverified market-leader claim." },
+  "observed": {
+    "ledger": {
+      "schema_version": "1.0.0",
+      "run_id": "eval-claims",
+      "section_id": "hero",
+      "entries": [
+        { "id": "claim-verified", "statement_or_asset": "Reduced setup time in the approved study.", "status": "VERIFIED", "source": "artifacts/study.pdf", "accessed": "2026-07-15", "owner": "product", "approved_by": "release-owner", "approved_at": "2026-07-15T12:00:00.000Z", "allowed_use": ["public-landing-page"], "caveat": "Study cohort only" },
+        { "id": "claim-unknown", "statement_or_asset": "The market leader.", "status": "UNKNOWN", "source": "owner assertion without evidence", "accessed": "2026-07-15", "owner": "product", "approved_by": "release-owner", "approved_at": "2026-07-15T12:00:00.000Z", "allowed_use": ["internal-only"], "caveat": "Do not publish" }
+      ]
+    },
+    "publishable_claim_ids": ["claim-verified"],
+    "blocked_claim_ids": ["claim-unknown"]
+  }
+}

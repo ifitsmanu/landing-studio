@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ifitsmanu.github.io/landing-studio/schemas/dependency-decision.schema.json",
+  "title": "Landing Studio dependency decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "section_id", "id", "package", "version", "purpose", "official_docs", "maintenance_evidence", "license", "bundle_impact", "runtime_impact", "browser_support", "security_status", "alternatives", "exit_path", "proof", "decision"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "section_id": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "minLength": 1 },
+    "package": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "minLength": 1 },
+    "purpose": { "type": "string", "minLength": 1 },
+    "official_docs": { "type": "string", "minLength": 1 },
+    "maintenance_evidence": { "type": "string", "minLength": 1 },
+    "license": { "type": "string", "minLength": 1 },
+    "bundle_impact": { "type": "string", "minLength": 1 },
+    "runtime_impact": { "type": "string", "minLength": 1 },
+    "browser_support": { "type": "string", "minLength": 1 },
+    "security_status": { "type": "string", "minLength": 1 },
+    "alternatives": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "exit_path": { "type": "string", "minLength": 1 },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "decision": { "enum": ["adopt", "reject", "prototype-only"] }
+  }
+}

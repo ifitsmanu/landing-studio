@@ -1,0 +1,9 @@
+{
+  "input": { "request": "Tighten this supplied hero headline without changing layout or starting a build." },
+  "observed": {
+    "primary_skill": "landing-copywriter",
+    "activated_skills": ["landing-copywriter"],
+    "not_activated": ["landing-page-build", "motion-video", "webgl-3d"],
+    "state_created": false
+  }
+}

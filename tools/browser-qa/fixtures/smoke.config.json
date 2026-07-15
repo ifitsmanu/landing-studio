@@ -1,0 +1,8 @@
+{
+  "fixture": "positive",
+  "browser": "chromium",
+  "out": ".landing-studio/evidence/browser-qa-smoke",
+  "run-id": "browser-qa-smoke",
+  "section-id": "fixture",
+  "commit": "working-tree"
+}

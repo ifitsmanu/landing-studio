@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and showcases
+    url: https://github.com/ifitsmanu/landing-studio/discussions
+    about: Ask for help or share a page built with Landing Studio.
+  - name: Private security report
+    url: https://github.com/ifitsmanu/landing-studio/security/advisories/new
+    about: Report vulnerabilities or sensitive issues privately.

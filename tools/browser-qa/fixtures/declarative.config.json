@@ -1,0 +1,30 @@
+{
+  "fixture": "positive",
+  "journey-mode": "declarative",
+  "browser": "chromium",
+  "profiles": "mobile-light",
+  "out": ".landing-studio/evidence/browser-qa-declarative",
+  "run-id": "browser-qa-declarative",
+  "section-id": "fixture",
+  "commit": "working-tree",
+  "section-selector": "[data-qa-section]",
+  "reduced-motion-selector": "#motion-proof",
+  "journey": [
+    {
+      "name": "hero-visible",
+      "action": "check-visible",
+      "selector": "[data-qa-section=hero]"
+    },
+    {
+      "name": "request-demo",
+      "action": "click",
+      "selector": "#primary-cta"
+    },
+    {
+      "name": "confirmation-visible",
+      "action": "check-text",
+      "selector": "#cta-status",
+      "text": "Fixture demo requested"
+    }
+  ]
+}

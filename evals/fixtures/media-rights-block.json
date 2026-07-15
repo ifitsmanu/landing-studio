@@ -1,0 +1,16 @@
+{
+  "input": { "request": "Ship both assets even though the identifiable-person release is pending on one." },
+  "observed": {
+    "ledger": {
+      "schema_version": "1.0.0",
+      "run_id": "eval-media",
+      "section_id": "hero",
+      "assets": [
+        { "id": "asset-cleared", "role": "hero photography", "source_url": "https://assets.example/cleared", "creator": "Studio", "rights_holder": "Studio", "license_id": "commercial-2026", "license_snapshot_url": "https://assets.example/licenses/cleared.pdf", "acquired_at": "2026-07-15", "allowed_channels": ["public-landing-page"], "attribution": null, "restrictions": [], "modifications_allowed": true, "model_release": "not-applicable", "property_release": "not-applicable", "territory": "worldwide", "expires_at": null, "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "local_path": "public/cleared.webp", "generative_provenance": null, "privacy_review": "approved", "approved_by": "release-owner", "approved_at": "2026-07-15T12:00:00.000Z", "release_ready": true },
+        { "id": "asset-pending", "role": "testimonial photography", "source_url": "https://assets.example/person", "creator": "Studio", "rights_holder": "Studio", "license_id": "commercial-2026", "license_snapshot_url": "https://assets.example/licenses/person.pdf", "acquired_at": "2026-07-15", "allowed_channels": ["public-landing-page"], "attribution": null, "restrictions": ["model release pending"], "modifications_allowed": true, "model_release": "required-pending", "property_release": "not-applicable", "territory": "worldwide", "expires_at": null, "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "local_path": "public/person.webp", "generative_provenance": null, "privacy_review": "approved", "approved_by": "release-owner", "approved_at": "2026-07-15T12:00:00.000Z", "release_ready": false }
+      ]
+    },
+    "release_asset_ids": ["asset-cleared"],
+    "decision": "BLOCK"
+  }
+}

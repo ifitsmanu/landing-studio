@@ -96,7 +96,7 @@ and never invent values for fields marked "must ask."
 |---|---|---|
 | `voice.tone` | Declarative, present tense, short, concrete, zero hype adjectives | The register shared by the entire reference canon (OpenAI, Stripe, Linear, …). |
 | `brand.colors.neutrals` | Derive a 4-step ramp between bg and fg | A missing ramp must not become invented brand colors; interpolation is neutral. |
-| `brand.colors.primary.accent` | Use fg at full strength as the punctuation color | A missing accent must not become an invented one. |
+| `brand.colors.primary.accent` | **Must ask or omit the accent role** | Reusing foreground as accent changes emphasis semantics and must not happen silently. |
 | `brand.type.mono` | Omit | Mono signals developer product; adding it uninvited changes positioning. |
 | `cta.secondary` | Omit | The page is stronger with one ask; secondaries are opt-in. |
 | `brand.name` rendering | Exactly as the user writes it | Casing/spacing of a name is identity, not style. |

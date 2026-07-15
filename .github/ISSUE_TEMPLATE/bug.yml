@@ -1,0 +1,42 @@
+name: Bug report
+description: Report a reproducible workflow, script, validation, or documentation defect.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include secrets, private customer data, or embargoed vulnerabilities.
+  - type: input
+    id: version
+    attributes:
+      label: Landing Studio version or commit
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Agent/runtime and version
+      placeholder: Codex CLI, Claude Code, Gemini CLI, Cursor, OpenCode, Windsurf, Cline, other
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include setup, exact prompt or command, expected behavior, actual behavior, and sanitized logs.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence artifacts
+      description: Add report paths, screenshots with route/viewport, traces, or fixture links.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I removed secrets and private customer data.
+          required: true
+        - label: This is not a private security vulnerability.
+          required: true

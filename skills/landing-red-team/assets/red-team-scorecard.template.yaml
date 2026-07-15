@@ -1,0 +1,78 @@
+workpaper_version: "1.0"
+canonical_release_template: "../../../templates/red-team-report.yaml"
+review:
+  active_page: ""
+  active_section_id: ""
+  producer: ""
+  reviewer: ""
+  independence: "INDEPENDENT | REDUCED_ASSURANCE_FRESH_PASS"
+  prior_rationale_exposure: ""
+  reviewed_at: "YYYY-MM-DDTHH:MM:SSZ"
+  run_manifest_path: ""
+build:
+  url_and_route: ""
+  revision_or_build_id: ""
+  environment: ""
+approved_artifacts:
+  brief_version: ""
+  selected_territory_version: ""
+  copy_version: ""
+  evidence_map_version: ""
+  media_ledger_version: ""
+  technology_decision_ids: []
+browser_matrix:
+  - browser_and_version: ""
+    viewport: ""
+    input_mode: ""
+    motion_preference: ""
+    locale: ""
+    data_consent_auth_state: ""
+    status: "NOT_RUN"
+    evidence_paths: []
+evidence_limits: []
+scorecard:
+  strategy_and_comprehension: 0
+  copy_and_claim_integrity: 0
+  visual_and_responsive: 0
+  originality_and_specificity: 0
+  proof_and_trust: 0
+  interaction_and_conversion: 0
+  accessibility_and_reduced_motion: 0
+  performance_and_resilience: 0
+  rights_privacy_and_non_deception: 0
+  weighted_score_before_cap: 0
+  applied_cap: null
+  final_score: 0
+findings:
+  - id: "RT-001"
+    severity: "P1"
+    title: ""
+    url_state_viewport_browser: ""
+    reproduction_steps: []
+    observed: ""
+    evidence_paths: []
+    expected: ""
+    violated_principle_or_requirement: ""
+    impact: ""
+    acceptance_test: ""
+    owner: ""
+    status: "OPEN"
+    accepted_by: null
+    accepted_at: null
+    acceptance_reason: null
+    rerun_evidence: []
+gates:
+  browser_evidence_complete: false
+  claims_evidence_complete: false
+  media_rights_complete: false
+  dependency_records_complete: false
+  open_p0: 0
+  open_p1: 0
+  unaccepted_p2: 0
+  p3_backlog_ids: []
+verdict:
+  status: "BLOCK | PASS"
+  rationale: ""
+  residual_risks: []
+  independently_certified: false
+  user_section_approval: "NOT_REQUESTED"

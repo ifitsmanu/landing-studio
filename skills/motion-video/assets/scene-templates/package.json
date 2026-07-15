@@ -1,6 +1,6 @@
 {
   "name": "landing-studio-scene-templates",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -8,9 +8,11 @@
   },
   "scripts": {
     "capture": "node capture.mjs",
-    "check": "node --check capture.mjs"
+    "check": "node --check capture.mjs && node --check inspect-media.mjs",
+    "smoke": "node --test ../../../../tests/motion-video.test.mjs"
   },
   "devDependencies": {
+    "pngjs": "7.0.0",
     "playwright": "1.61.1"
   }
 }

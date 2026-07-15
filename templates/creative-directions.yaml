@@ -1,0 +1,35 @@
+schema_version: 1.0.0
+run_id: ls_0000000000000000
+section_id: hero
+territories:
+  - id: territory-a
+    name: Replace with direction A
+    governing_idea: Replace with a product-specific idea
+    proof_claim_ids: []
+    responsive_behavior: Replace with narrow and wide behavior
+    motion_and_static_behavior: Replace with motion and equivalent static behavior
+    media_asset_ids: []
+    dependency_ids: []
+  - id: territory-b
+    name: Replace with direction B
+    governing_idea: Replace with a materially different idea
+    proof_claim_ids: []
+    responsive_behavior: Replace with narrow and wide behavior
+    motion_and_static_behavior: Replace with motion and equivalent static behavior
+    media_asset_ids: []
+    dependency_ids: []
+  - id: territory-c
+    name: Replace with direction C
+    governing_idea: Replace with a third materially different idea
+    proof_claim_ids: []
+    responsive_behavior: Replace with narrow and wide behavior
+    motion_and_static_behavior: Replace with motion and equivalent static behavior
+    media_asset_ids: []
+    dependency_ids: []
+pairwise_audit:
+  - { left: territory-a, right: territory-b, difference: Replace with structural difference, pass: true }
+  - { left: territory-a, right: territory-c, difference: Replace with structural difference, pass: true }
+  - { left: territory-b, right: territory-c, difference: Replace with structural difference, pass: true }
+selected_territory_id: territory-a
+selected_by: replace-with-approver
+selected_at: 2026-01-01T00:00:00.000Z

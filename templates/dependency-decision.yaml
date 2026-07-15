@@ -1,0 +1,21 @@
+schema_version: 1.0.0
+run_id: ls_0000000000000000
+section_id: hero
+id: dependency-1
+package: replace-with-package
+version: replace-with-exact-version
+purpose: Replace with the requirement this dependency satisfies
+official_docs: https://example.invalid/official-docs
+maintenance_evidence: Replace with dated release or repository evidence
+license: Replace with verified SPDX identifier
+bundle_impact: Replace with measured bytes or not-applicable
+runtime_impact: Replace with measured runtime cost or not-applicable
+browser_support: Replace with official support evidence
+security_status: Replace with audit and advisory evidence
+alternatives:
+  - existing project capability
+exit_path: Replace with removal or fallback plan
+proof:
+  path: replace-with-proof-artifact
+  sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+decision: prototype-only

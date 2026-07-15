@@ -1,0 +1,14 @@
+schema_version: 1.0.0
+run_id: replace-with-run-id
+section_id: hero
+reviewer: replace-with-independent-reviewer
+reviewer_context_id: replace-with-reviewer-context-id
+producer_context_id: replace-with-producer-context-id
+fresh_context: false
+reviewed_at: 2026-01-01T00:00:00.000Z
+evidence_bundle:
+  - kind: browser-report
+    path: replace-with-browser-report-path
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+findings: []
+decision: BLOCK

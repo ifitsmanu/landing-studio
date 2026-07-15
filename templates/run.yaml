@@ -1,0 +1,47 @@
+schema_version: 1.0.0
+run:
+  id: ls_0000000000000000
+  created_at: 2026-01-01T00:00:00.000Z
+  updated_at: 2026-01-01T00:00:00.000Z
+  requested_outcome: Replace with the approved page outcome
+  success_metric: replace_with_verified_metric
+  producer_context_id: replace-with-producer-context-id
+project:
+  root: .
+  route: /
+  page_id: home
+  test_base_url: http://127.0.0.1:3000
+capabilities:
+  current_research: { status: unavailable, evidence: replace-with-capability-check }
+  interactive_browser: { status: fallback, evidence: bundled Playwright harness }
+  screenshot_evidence: { status: fallback, evidence: bundled Playwright harness }
+  image_generation: { status: unavailable, evidence: replace-with-capability-check }
+  video_generation: { status: unavailable, evidence: replace-with-capability-check }
+  independent_critic: { status: unavailable, evidence: replace-with-capability-check }
+  webgl_3d: { status: not-needed, evidence: replace-with-section-decision }
+page:
+  frame:
+    artifact: null
+    approval: null
+  active_section_id: null
+  sections:
+    - id: hero
+      title: Hero
+      order: 1
+      status: queued
+      locked: false
+      stale: false
+      stale_reasons: []
+      locks:
+        direction: false
+      artifacts: []
+      approvals: []
+      rejections: []
+  final_artifacts: []
+findings: []
+skips: []
+release:
+  decision: UNASSESSED
+  checked_at: null
+  blockers: []
+  unresolved_risks: []

@@ -1,0 +1,14 @@
+changelog:
+  exclude:
+    labels: [skip-changelog]
+  categories:
+    - title: Breaking changes
+      labels: [breaking]
+    - title: Skills and workflows
+      labels: [skill, enhancement]
+    - title: Fixes
+      labels: [bug]
+    - title: Documentation and community
+      labels: [documentation, community]
+    - title: Other changes
+      labels: ['*']

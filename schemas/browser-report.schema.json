@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ifitsmanu.github.io/landing-studio/schemas/browser-report.schema.json",
+  "title": "Landing Studio browser evidence report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "section_id", "url", "commit", "captured_at", "projects", "journeys", "console_errors", "failed_requests", "axe", "artifacts", "decision"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "section_id": { "type": "string", "minLength": 1 },
+    "url": { "type": "string", "pattern": "^https?://" },
+    "commit": { "type": "string", "minLength": 7 },
+    "captured_at": { "$ref": "#/definitions/timestamp" },
+    "projects": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/project" } },
+    "journeys": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/journey_summary" } },
+    "console_errors": { "type": "array", "items": { "type": "object" } },
+    "failed_requests": { "type": "array", "items": { "$ref": "#/definitions/request" } },
+    "axe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["blocking_violations", "violations"],
+      "properties": {
+        "blocking_violations": { "type": "integer", "minimum": 0 },
+        "violations": { "type": "array", "items": { "type": "object" } }
+      }
+    },
+    "artifacts": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/artifact" } },
+    "decision": { "enum": ["PASS", "BLOCK"] }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "decision": { "const": "PASS" } }, "required": ["decision"] },
+      "then": {
+        "properties": {
+          "console_errors": { "type": "array", "maxItems": 0 },
+          "failed_requests": { "type": "array", "items": { "type": "object", "properties": { "firstParty": { "const": false } }, "required": ["firstParty"] } },
+          "journeys": { "type": "array", "items": { "type": "object", "properties": { "passed": { "const": true }, "steps": { "type": "array", "minItems": 1, "items": { "type": "object", "properties": { "passed": { "const": true } }, "required": ["passed"] } }, "error": { "type": "null" } }, "required": ["passed", "steps", "error"] } },
+          "axe": { "type": "object", "properties": { "blocking_violations": { "const": 0 } } },
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "journey": { "type": "object", "properties": { "passed": { "const": true }, "steps": { "type": "array", "minItems": 1, "items": { "type": "object", "properties": { "passed": { "const": true } }, "required": ["passed"] } }, "error": { "type": "null" } }, "required": ["passed", "steps", "error"] },
+                "accessibility": { "type": "object", "properties": { "blocking_violations": { "const": 0 } } },
+                "console": { "type": "object", "properties": { "errors": { "type": "array", "maxItems": 0 }, "pageErrors": { "type": "array", "maxItems": 0 } } },
+                "network": { "type": "object", "properties": { "failed_first_party": { "type": "array", "maxItems": 0 } } },
+                "evidence": { "type": "object", "properties": { "screenshots": { "type": "array", "minItems": 4 }, "missing": { "type": "array", "maxItems": 0 }, "section_screenshot_count": { "type": "integer", "minimum": 1 }, "journey_screenshot_count": { "type": "integer", "minimum": 1 } } },
+                "blockers": { "type": "array", "maxItems": 0 }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "timestamp": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$" },
+    "viewport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "journey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["passed", "steps", "error"],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "steps": { "type": "array", "items": { "type": "object", "required": ["name", "passed"], "properties": { "name": { "type": "string", "minLength": 1 }, "passed": { "type": "boolean" } } } },
+        "error": { "type": ["string", "null"] }
+      }
+    },
+    "journey_summary": {
+      "type": "object",
+      "required": ["project", "passed", "steps", "error"],
+      "properties": {
+        "project": { "type": "string", "minLength": 1 },
+        "passed": { "type": "boolean" },
+        "steps": { "type": "array" },
+        "error": { "type": ["string", "null"] }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project", "type", "path", "sha256"],
+      "properties": {
+        "project": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["screenshot", "trace"] },
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "request": {
+      "type": "object",
+      "required": ["project", "url", "method", "status", "failure", "firstParty"],
+      "properties": {
+        "project": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "minLength": 1 },
+        "method": { "type": "string", "minLength": 1 },
+        "status": { "type": ["integer", "null"] },
+        "failure": { "type": ["string", "null"] },
+        "firstParty": { "type": "boolean" }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "browser", "viewport", "preferences", "journey", "accessibility", "console", "network", "evidence", "blockers"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "browser": { "enum": ["chromium", "firefox", "webkit"] },
+        "viewport": { "$ref": "#/definitions/viewport" },
+        "preferences": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["colorScheme", "reducedMotion"],
+          "properties": { "colorScheme": { "enum": ["light", "dark", "no-preference"] }, "reducedMotion": { "enum": ["reduce", "no-preference"] } }
+        },
+        "journey": { "$ref": "#/definitions/journey" },
+        "accessibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["url", "violations", "blocking_violations"],
+          "properties": { "url": { "type": "string", "pattern": "^https?://" }, "violations": { "type": "array" }, "blocking_violations": { "type": "integer", "minimum": 0 } }
+        },
+        "console": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["messages", "errors", "pageErrors"],
+          "properties": { "messages": { "type": "array" }, "errors": { "type": "array" }, "pageErrors": { "type": "array" } }
+        },
+        "network": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["failed", "failed_first_party"],
+          "properties": { "failed": { "type": "array" }, "failed_first_party": { "type": "array" } }
+        },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["viewport", "screenshots", "trace", "missing", "section_screenshot_count", "journey_screenshot_count"],
+          "properties": {
+            "viewport": { "$ref": "#/definitions/viewport" },
+            "screenshots": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+            "trace": { "type": "string", "minLength": 1 },
+            "missing": { "type": "array", "items": { "type": "string" } },
+            "section_screenshot_count": { "type": "integer", "minimum": 0 }
+            ,"journey_screenshot_count": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "blockers": { "type": "array", "items": { "type": "object" } }
+      }
+    }
+  }
+}

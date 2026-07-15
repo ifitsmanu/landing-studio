@@ -1,153 +1,97 @@
-# Landing Studio handoff contracts
+# Specialist handoff contracts
 
-Each stage writes files in the target project so the next stage reads approved artifacts rather than
-conversation memory. Use project conventions for artifact locations; record the paths in the final
-handoff.
+The target project's `.landing-studio/run.yaml` is the handoff index. Every stage records its inputs, outputs, hashes, status, and approval. Files and browser artifacts outrank conversation summaries.
 
-## Contract rule
+## Universal gate
 
-A stage passes only when its required inputs exist, its output is reviewable, and its gate has
-evidence. If a downstream stage exposes an upstream defect, return it to the owning stage and rerun
-affected approvals/tests. Do not patch strategy in CSS, copy in QA, or privacy policy in analytics
-code.
+A handoff passes only when:
 
-## Stage 0: `landing-research`
+1. required inputs exist and match their recorded hashes;
+2. output is inspectable and owned by the named specialist;
+3. factual claims map to the evidence ledger;
+4. media maps to the asset-rights ledger;
+5. new dependencies map to a dependency decision record;
+6. the observable acceptance test ran and its artifact is recorded;
+7. the receiving stage identifies no stale upstream dependency.
 
-**Needs:** project-root `brand-kit.md`, repository/docs, product access/material, traffic context,
-customer evidence, current primary sources, and reference URLs.
+If a downstream stage exposes an upstream defect, return it to the owning stage. Do not patch strategy in CSS, copy in QA, rights in alt text, or browser failures in a written handoff.
 
-**Returns:** `LANDING-BRIEF.md`, `EVIDENCE-LEDGER.md`, current asset inventory, thesis/CTA
-recommendation, unknowns and risks.
+## Page frame: `landing-research`
 
-**Gate:** page job, audience, traffic promise, primary conversion, approved evidence, competitors,
-and material unknowns are explicit. Strategy approval recorded.
+**Needs:** brand kit, repository and product evidence, audience/customer language, traffic promise, CTA destination, current primary sources, reference URLs, constraints.
 
-**Backflow:** missing product truth or authority decision returns to the project owner, not design.
+**Returns:** page job, audience, awareness, thesis, proof/claim ledger, objections, unknowns, route/page queue, section queue, and success measure.
 
-## Stage 0a: `marketing-campaign` for dated launches
+**Approval:** page frame and section queue. Missing product truth returns to the owner.
 
-**Needs:** approved landing brief, `constraints.launch_date`, evidence ledger, audience/traffic context,
-owned-channel inventory, people, budget, and channel constraints.
+## Section direction: `creative-direction`
 
-**Returns:** approved dated campaign brief, message house, channel roles, asset/owner plan, measurement
-scheme, and run-of-show. Production remains with the relevant copy/design/motion skills.
+**Needs:** approved frame, active section job, brand assets, category/cultural reference research, proof, constraints.
 
-**Gate:** objective, primary audience, traffic promise, CTA, evidence, launch date, channel roles,
-measurement, and prohibited tactics are aligned before page or campaign production begins.
+**Returns:** three distinct territories, sourced principle ledger, originality/median test, cost/risk, and selected direction record.
 
-**Backflow:** positioning/evidence conflicts return to research; launch timing/ownership conflicts return
-to the project owner. Campaign activation waits for Stage 9 release readiness.
+**Approval:** one territory. Three cosmetic variants fail this gate.
 
-## Stage 1: `landing-design-system`
+## System: `landing-design-system`
 
-**Needs:** approved brief, canonical kit, project tokens/components/assets, accessibility target.
+**Needs:** approved frame/direction, real project tokens and components, licensed identity assets, accessibility target.
 
-**Returns:** role-based tokens, typography/grid/spacing, component and motion rules, specimen or
-equivalent implementation reference.
+**Returns:** role-based tokens, type/grid/spacing, components, focus/motion/reduced-motion states, responsive contract, verified contrast evidence.
 
-**Gate:** real licensed/supplied identity assets, verified contrast pairs, complete interactive
-states, responsive rules, no unnecessary replacement of the project system.
+**Backflow:** brand conflict returns to the owner; missing interaction state stays here.
 
-**Backflow:** identity conflicts return to kit/project owner; missing component behavior remains here.
+## Active-section design and copy
 
-## Stage 2: `landing-page-design`
+`landing-page-design` returns hierarchy, content/media slots, responsive behavior, CTA path, and measurable acceptance criteria for only the active section. `landing-copywriter` returns slot-labeled strings, proof IDs, metadata where relevant, caveats, alt/caption text, and destination message match.
 
-**Needs:** brief, evidence ledger, system, traffic/awareness context, primary journey, real media.
+Both require explicit production-input approval. Slot mismatch returns to design; evidence gaps return to research.
 
-**Returns:** page/section spec, hero mechanism, proof/objection sequence, CTA map, responsive behavior,
-motion/media slots, copy budgets.
+## Media: `media-sourcing`
 
-**Gate:** each section has a distinct user/job function; hero works statically; proof order is
-defensible; primary path is clear; mobile is composed intentionally. Page-structure approval recorded.
+**Needs:** exact media job, channels, audience, brand/generation policy, target sizes, territory, duration, and budget.
 
-**Backflow:** unsupported claims return to research; token gaps return to design system.
+**Returns:** asset decision, source/local path, hash, creator, acquisition date, license snapshot, attribution, allowed channels, restrictions, model/property release status, territory/expiry, and generative provenance.
 
-## Stage 3: `landing-copywriter`
+No ledger entry means no implementation. A source being publicly accessible is not permission.
 
-**Needs:** approved page spec, kit/voice, evidence ledger, customer language, traffic promise, CTA.
+## Dependencies: `technology-curator`
 
-**Returns:** slot-labeled copy deck, metadata drafts, alt/caption text, proof IDs and legal notes.
+**Needs:** capability gap, target stack, existing utilities, bundle/runtime/security/license/browser constraints.
 
-**Gate:** every factual claim is traceable; required caveats are present; message match reaches the
-destination; no placeholder/fabricated proof; copy approval recorded.
+**Returns:** official-source comparison, measured proof, package/version, maintenance and license evidence, bundle/runtime impact, alternatives, failure modes, exit path, and adopt/reject decision.
 
-**Backflow:** slot/word-fit conflicts return to page design; evidence gaps return to research.
+No measured proof means a recommendation, not an approved dependency.
 
-## Stage 4: `motion-video` when justified
+## Motion/video and 3D
 
-**Needs:** motion brief inputs, approved claim/CTA, page placement, tokens, real assets/access, rights,
-generation policy, performance budget.
+`motion-video` returns editable source, deterministic or documented production path, renders, poster, reduced-motion/static equivalent, captions/transcript, rights record, placement review, and performance measurements.
 
-**Returns:** brief, concepts, beat sheet/storyboard, source project, approved render/embed, poster,
-reduced-motion state, captions/transcript, cutdowns, delivery notes.
+`webgl-3d` returns purpose, selected lane, model/texture provenance, device/GPU budget, capabilities, context-loss behavior, keyboard/touch semantics, reduced-motion/static fallback, and browser evidence.
 
-**Gate:** product/claim accuracy, rights/privacy, static/reduced-motion equivalence, final-size
-legibility, native-placement review, reproducible production, page performance fit.
+If the effect carries essential meaning unavailable in the fallback, the gate fails.
 
-**Backflow:** false/unprovable beat returns to research/copy; infeasible slot returns to page design.
+## Implementation
 
-## Stage 5: `landing-page-implementation`
+`landing-page-implementation` consumes only approved inputs and returns built code, project test/build evidence, route, primary journey wiring, implementation notes, and source mapping. It does not silently redesign or rewrite.
 
-**Needs:** all approved artifacts, target route, repository rules, project stack and acceptance tests.
+## Search, measurement, and browser QA
 
-**Returns:** production code/assets, built route, `IMPLEMENTATION-NOTES.md`.
+- SEO/AEO/GEO consume rendered/raw reality and current official engine guidance.
+- CRO consumes the actual journey and existing privacy/analytics policy; replay/heatmaps require separate consent and data decisions.
+- `landing-page-qa` returns the evidence manifest, screenshots, journey results, console/request logs, accessibility output, preferences, and traces.
 
-**Gate:** project build/tests pass; direct route renders; approved content/assets only; primary
-journey works or has a named external blocker; responsive/keyboard/reduced-motion basics verified;
-console/network smoke clean.
+Code review or a build cannot substitute for browser evidence.
 
-**Backflow:** do not rewrite approved copy or design silently to fix implementation pressure.
+## Independent red team
 
-## Stage 6: SEO, AEO, GEO audits
+`landing-red-team` receives the approved truth and rendered result, then returns P0–P3 findings with exact evidence, user/business impact, violated constraint, owner, and reproducible acceptance test.
 
-**Needs:** rendered/raw page, current kit/brief/ledger, search/referral data when available.
+- P0/P1: block and return to the owner stage.
+- P2: fix or obtain explicit recorded owner acceptance.
+- P3: backlog is allowed.
 
-**Returns:** scoped audit reports with current official-source checks, evidence, severity, owners,
-paste-ready fixes where appropriate, and verification.
+The producing context cannot approve or downgrade its own finding.
 
-**Gate:** authorized P0/P1 fixes applied and failed checks rerun. Deprecated/unsupported advice is not
-introduced. Audit-driven structural/copy changes return through their approval owners.
+## Approval and skip records
 
-## Stage 7: `conversion-optimization`
-
-**Needs:** built page/journey, analytics/consent conventions, baseline data, business outcome and
-guardrails.
-
-**Returns:** `CRO-PLAN.md`, verified event definitions, privacy/consent/masking controls, hypotheses,
-validation or experiment cards.
-
-**Gate:** primary conversion verified end to end; no sensitive capture; consent matches project
-policy; conclusions identify their evidence/confidence; experiments have decision rules.
-
-**Backflow:** unclear business outcome returns to strategy; UX defect routes to its owning stage.
-
-## Stage 8: `landing-page-qa`
-
-**Needs:** final candidate URL/build, artifacts, test matrix, journey, environment constraints.
-
-**Returns:** `LANDING-QA.md`, screenshots/traces/logs/test output, release recommendation, rerun results.
-
-**Gate:** representative browser/device/pref checks complete; primary journey verified; zero open
-P0/P1 for `SHIP`; untested areas explicit.
-
-**Backflow:** each finding routes to the stage that owns the defect and returns for targeted rerun.
-
-## Stage 9: orchestrator quality gate
-
-**Needs:** approvals, artifact paths, audit/QA outcomes, risk acceptances, deployment state.
-
-**Returns:** `SHIP`, `CONDITIONAL`, or `BLOCK` plus the complete evidence handoff.
-
-**Gate:** apply `quality-gate.md`. No stage can self-certify a defect it owns without rerunning the
-independent observable check.
-
-## Skip record
-
-For every omitted stage record:
-
-```markdown
-| Stage | Skipped because | Evidence | Risk | Owner approval |
-|---|---|---|---|---|
-```
-
-“Not needed” without evidence is not a skip decision.
+Every approval stores section/page ID, artifact hashes, approver, timestamp, decision, and note. Every skip stores capability/stage, reason, evidence, risk, substitute, and approver. "Not needed" is not sufficient evidence.

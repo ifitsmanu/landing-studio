@@ -1,0 +1,43 @@
+schema_version: 1.0.0
+run:
+  id: ls_0123456789abcdef
+  created_at: 2026-07-15T12:00:00.000Z
+  updated_at: 2026-07-15T12:00:00.000Z
+  requested_outcome: Demonstrate the section-gated workflow
+  success_metric: qualified_signup
+  producer_context_id: producer-context
+project:
+  root: .
+  route: /
+  page_id: home
+  test_base_url: http://127.0.0.1:3000
+capabilities:
+  current_research: { status: native, evidence: test fixture }
+  interactive_browser: { status: fallback, evidence: test fixture }
+  screenshot_evidence: { status: fallback, evidence: test fixture }
+  image_generation: { status: not-needed, evidence: test fixture }
+  video_generation: { status: not-needed, evidence: test fixture }
+  independent_critic: { status: native, evidence: test fixture }
+  webgl_3d: { status: not-needed, evidence: test fixture }
+page:
+  active_section_id: hero
+  sections:
+    - id: hero
+      title: Hero
+      order: 1
+      status: queued
+      locked: false
+      stale: false
+      stale_reasons: []
+      locks:
+        direction: false
+      artifacts: []
+      approvals: []
+      rejections: []
+findings: []
+skips: []
+release:
+  decision: UNASSESSED
+  checked_at: null
+  blockers: []
+  unresolved_risks: []

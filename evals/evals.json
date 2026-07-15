@@ -1,70 +1,113 @@
 {
-  "skill_name": "landing-studio",
-  "evals": [
+  "$schema": "./eval-suite.schema.json",
+  "suite_version": "1.0.0",
+  "cases": [
     {
-      "id": 1,
-      "prompt": "We have a Next.js repo, a product brief, three customer calls, a live app, and two reference sites. Build a launch landing page without replacing our component library. We need the page, a 12-second hero demo, SEO, analytics, and browser verification.",
-      "expected_output": "The orchestrator inspects project rules, runs evidence discovery first, records approvals, reuses the stack, treats motion as optional proof, implements the page, runs current SEO/AEO/GEO, defines consent-aware measurement, and verifies the real route in browsers.",
-      "files": [],
+      "id": "activation-full-studio",
+      "category": "activation",
+      "fixture_path": "evals/fixtures/activation-full-studio.json",
+      "rubric_path": "evals/rubrics/routing.md",
       "assertions": [
-        "Creates or requests a canonical brand kit, discovery brief, and evidence ledger before claims or copy",
-        "Uses the existing Next.js/component system unless a documented gap justifies a dependency",
-        "Requires page-structure and copy approval before implementation",
-        "Verifies the built route with browser, accessibility, performance, journey, console, and network evidence",
-        "Does not treat motion, AEO, GEO, or analytics as magic conversion guarantees"
+        { "id": "director", "pointer": "/observed/primary_skill", "operator": "equals", "expected": "landing-page-build", "severity": "P1", "weight": 3 },
+        { "id": "specialists", "pointer": "/observed/activated_skills", "operator": "contains_all", "expected": ["landing-research", "creative-direction", "landing-page-implementation", "landing-page-qa", "landing-red-team"], "severity": "P1", "weight": 3 },
+        { "id": "section-scope", "pointer": "/observed/production_scope", "operator": "equals", "expected": "one-section-at-a-time", "severity": "P1", "weight": 3 }
       ]
     },
     {
-      "id": 2,
-      "prompt": "Audit our SaaS homepage for AEO. Add FAQ schema and HowTo schema everywhere, make each answer exactly 50 words, and create llms.txt so Google AI Mode ranks us.",
-      "expected_output": "The audit rejects obsolete or unsupported tactics, explains that Google deprecated FAQ rich results and removed HowTo rich results, avoids fixed answer length, states Google ignores llms.txt, and returns user-first answer and supported-schema improvements backed by current official sources.",
-      "files": [],
+      "id": "nonactivation-narrow-copy",
+      "category": "nonactivation",
+      "fixture_path": "evals/fixtures/nonactivation-narrow-copy.json",
+      "rubric_path": "evals/rubrics/routing.md",
       "assertions": [
-        "Rejects FAQPage and HowTo as Google rich-result requirements",
-        "Rejects a fixed 50-word formula and mandatory content chunking",
-        "States that Google Search ignores llms.txt for visibility",
-        "Verifies current official engine documentation before recommending schema",
-        "Preserves visible-content parity and evidence traceability"
+        { "id": "narrow-route", "pointer": "/observed/activated_skills", "operator": "equals", "expected": ["landing-copywriter"], "severity": "P1", "weight": 3 },
+        { "id": "no-studio-state", "pointer": "/observed/state_created", "operator": "equals", "expected": false, "severity": "P1", "weight": 3 },
+        { "id": "avoid-heavy-skills", "pointer": "/observed/not_activated", "operator": "contains_all", "expected": ["landing-page-build", "motion-video", "webgl-3d"], "severity": "P2", "weight": 2 }
       ]
     },
     {
-      "id": 3,
-      "prompt": "Our landing page has 8,000 monthly visits and weak demo bookings. Install heatmaps, record every session, add urgency, and use clickbait headlines. Tell me what users are thinking from scroll depth.",
-      "expected_output": "The CRO skill audits the existing stack and event quality, refuses deceptive patterns and mind-reading, defines a privacy/consent/masking plan, validates the conversion funnel, and creates testable hypotheses with guardrails and an appropriate experiment method.",
-      "files": [],
+      "id": "orchestration-one-section",
+      "category": "orchestration",
+      "fixture_path": "evals/fixtures/orchestration-one-section.json",
+      "rubric_path": "evals/rubrics/workflow.md",
       "assertions": [
-        "Does not equate heatmaps or scroll depth with attention, intent, or thought",
-        "Rejects clickbait, fake urgency, and dark patterns",
-        "Requires consent, masking, route exclusions, retention, and access controls for replay",
-        "Reuses the existing analytics stack before adding overlapping vendors",
-        "Defines a measurable hypothesis, primary metric, guardrails, and decision rule"
+        { "id": "active-only", "pointer": "/observed/implementation_scope", "operator": "equals", "expected": ["hero"], "severity": "P1", "weight": 3 },
+        { "id": "direction-approved", "pointer": "/observed/sections/0/stage", "operator": "equals", "expected": "direction_approved", "severity": "P1", "weight": 3 },
+        { "id": "downstream-queued", "pointer": "/observed/sections/1/stage", "operator": "equals", "expected": "queued", "severity": "P1", "weight": 3 }
       ]
     },
     {
-      "id": 4,
-      "prompt": "Make a premium paid-social ad and landing hero for a security product. We have real product capture, a licensed voice actor, and permission to use generative footage, but we cannot imply any certification we do not hold.",
-      "expected_output": "The motion skill selects and justifies production lanes, sources every claim, uses real product proof, handles generative rights/disclosure, creates poster/reduced-motion/caption states and native cutdowns, respects the performance budget, and verifies the CTA journey.",
-      "files": [],
+      "id": "claims-integrity",
+      "category": "claims",
+      "fixture_path": "evals/fixtures/claims-integrity.json",
+      "rubric_path": "evals/rubrics/integrity.md",
       "assertions": [
-        "Uses the approved generation policy without fabricating product behavior or certification",
-        "Maps every factual claim to evidence and includes legal/product approval",
-        "Creates an effective static poster and reduced-motion equivalent",
-        "Recomposes rather than blindly center-cropping required aspect ratios",
-        "Verifies rights, captions, browser/page performance, and CTA message match"
+        { "id": "ledger-schema", "pointer": "/observed/ledger", "operator": "schema_valid", "expected": "schemas/evidence-ledger.schema.json", "severity": "P1", "weight": 3 },
+        { "id": "verified-publishes", "pointer": "/observed/publishable_claim_ids", "operator": "contains_all", "expected": ["claim-verified"], "severity": "P1", "weight": 3 },
+        { "id": "unknown-blocked", "pointer": "/observed/blocked_claim_ids", "operator": "contains_all", "expected": ["claim-unknown"], "severity": "P0", "weight": 4 }
       ]
     },
     {
-      "id": 5,
-      "prompt": "QA the final campaign page before we deploy. The build passes, so just confirm it is good.",
-      "expected_output": "The QA skill refuses to infer release readiness from the build alone, tests the rendered page and primary conversion across representative browsers/viewports/preferences, checks accessibility, metadata, analytics/consent, console/network, and returns SHIP, CONDITIONAL, or BLOCK with evidence.",
-      "files": [],
+      "id": "section-approval-lock",
+      "category": "section_approval",
+      "fixture_path": "evals/fixtures/section-approval-lock.json",
+      "rubric_path": "evals/rubrics/workflow.md",
       "assertions": [
-        "Does not use a passing build as sufficient release evidence",
-        "Exercises the primary CTA/form through a safe verifiable completion",
-        "Tests mobile/desktop, keyboard, reduced motion, accessibility, console, and network",
-        "Checks raw HTML, metadata, supported schema, analytics, consent, and replay masking",
-        "Returns a severity-backed release decision and rerun cases"
+        { "id": "preapproval-block", "pointer": "/observed/before_approval/error_code", "operator": "equals", "expected": "DIRECTION_APPROVAL_REQUIRED", "severity": "P1", "weight": 3 },
+        { "id": "postapproval-allowed", "pointer": "/observed/after_approval/allowed", "operator": "equals", "expected": true, "severity": "P1", "weight": 3 },
+        { "id": "downstream-stale", "pointer": "/observed/after_rejection/downstream_stale", "operator": "equals", "expected": true, "severity": "P1", "weight": 3 }
+      ]
+    },
+    {
+      "id": "media-rights-block",
+      "category": "media",
+      "fixture_path": "evals/fixtures/media-rights-block.json",
+      "rubric_path": "evals/rubrics/integrity.md",
+      "assertions": [
+        { "id": "ledger-schema", "pointer": "/observed/ledger", "operator": "schema_valid", "expected": "schemas/media-ledger.schema.json", "severity": "P1", "weight": 3 },
+        { "id": "pending-excluded", "pointer": "/observed/release_asset_ids", "operator": "excludes_all", "expected": ["asset-pending"], "severity": "P0", "weight": 4 },
+        { "id": "release-blocked", "pointer": "/observed/decision", "operator": "equals", "expected": "BLOCK", "severity": "P0", "weight": 4 }
+      ]
+    },
+    {
+      "id": "browser-evidence-contract",
+      "category": "browser",
+      "fixture_path": "evals/fixtures/browser-evidence-contract.json",
+      "rubric_path": "evals/rubrics/integrity.md",
+      "assertions": [
+        { "id": "report-schema", "pointer": "/observed", "operator": "schema_valid", "expected": "schemas/browser-report.schema.json", "severity": "P1", "weight": 3 },
+        { "id": "three-engines", "pointer": "/observed/projects", "operator": "length_at_least", "expected": 3, "severity": "P1", "weight": 3 },
+        { "id": "evidence-pass", "pointer": "/observed/decision", "operator": "equals", "expected": "PASS", "severity": "P1", "weight": 3 }
+      ]
+    },
+    {
+      "id": "webgl-fallback-budget",
+      "category": "webgl_3d",
+      "fixture_path": "evals/fixtures/webgl-fallback-budget.json",
+      "rubric_path": "evals/rubrics/integrity.md",
+      "assertions": [
+        { "id": "fallback", "pointer": "/observed/fallback/artifact", "operator": "matches", "expected": "\\.(avif|webp|png)$", "severity": "P1", "weight": 3 },
+        { "id": "reduced-motion", "pointer": "/observed/reduced_motion", "operator": "equals", "expected": "static-fallback", "severity": "P1", "weight": 3 },
+        { "id": "gpu-budget", "pointer": "/observed/budgets/max_gpu_frame_ms", "operator": "equals", "expected": 16.7, "severity": "P2", "weight": 2 }
+      ]
+    },
+    {
+      "id": "red-team-p1-block",
+      "category": "red_team",
+      "fixture_path": "evals/fixtures/red-team-p1-block.json",
+      "rubric_path": "evals/rubrics/integrity.md",
+      "assertions": [
+        { "id": "report-schema", "pointer": "/observed", "operator": "schema_valid", "expected": "schemas/red-team-report.schema.json", "severity": "P1", "weight": 3 },
+        { "id": "fresh-context", "pointer": "/observed/fresh_context", "operator": "equals", "expected": true, "severity": "P1", "weight": 3 },
+        { "id": "blocking-decision", "pointer": "/observed/decision", "operator": "equals", "expected": "BLOCK", "severity": "P0", "weight": 4 }
       ]
     }
+  ],
+  "cross_model_runs": [
+    { "runtime": "Codex", "model": "unassigned", "status": "unrun", "evidence_path": null, "note": "No retained clean-context model run." },
+    { "runtime": "Claude Code", "model": "unassigned", "status": "unrun", "evidence_path": null, "note": "No retained clean-context model run." },
+    { "runtime": "Gemini CLI", "model": "unassigned", "status": "unrun", "evidence_path": null, "note": "No retained clean-context model run." },
+    { "runtime": "GitHub Copilot", "model": "unassigned", "status": "unrun", "evidence_path": null, "note": "No retained clean-context model run." },
+    { "runtime": "OpenCode", "model": "unassigned", "status": "unrun", "evidence_path": null, "note": "No retained clean-context model run." },
+    { "runtime": "Cursor", "model": "unassigned", "status": "unrun", "evidence_path": null, "note": "No retained clean-context model run." }
   ]
 }

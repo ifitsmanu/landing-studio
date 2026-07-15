@@ -1,0 +1,71 @@
+workpaper_version: "1.0"
+canonical_release_template: "../../../templates/dependency-decision.yaml"
+decision_id: ""
+active_scope:
+  page: ""
+  section_id: ""
+capability_requirement:
+  user_visible_need: ""
+  must_haves: []
+  preferences: []
+  acceptance_tests: []
+  failure_fallback: ""
+inventory:
+  repository_revision: ""
+  package_manager_and_version: ""
+  framework_and_version: ""
+  reusable_capabilities: []
+candidates:
+  - name: ""
+    exact_version_reviewed: ""
+    role: "reuse | platform | library | custom"
+    official_sources:
+      - url: ""
+        accessed_at: "YYYY-MM-DD"
+        supports_claim: ""
+    maintenance_evidence: ""
+    license_evidence: ""
+    security_evidence: ""
+    browser_and_platform_evidence: ""
+    accessibility_evidence: ""
+    privacy_and_consent_evidence: ""
+    alternatives_and_tradeoffs: ""
+proof:
+  environment: ""
+  baseline_revision: ""
+  candidate_revision: ""
+  commands: []
+  production_bundle:
+    baseline_bytes: null
+    candidate_bytes: null
+    compression_context: ""
+    report_path: ""
+  runtime:
+    target_device_and_browser: ""
+    samples: []
+    trace_paths: []
+  browser_results: []
+  accessibility_results: []
+  failure_and_fallback_results: []
+  limitations: []
+decision:
+  status: "EVIDENCE_BLOCKED"
+  selected_candidate_and_version: null
+  rationale: ""
+  rejected_alternatives: []
+  approved_scope: ""
+  risks_and_mitigations: []
+  owner: ""
+  approved_by: null
+  approved_at: null
+  trial_expires_at: null
+  success_or_removal_criteria: []
+  update_strategy: ""
+  exit_path: ""
+  rollback_or_static_fallback: ""
+  reevaluation_triggers: []
+implementation_recheck:
+  lockfile_version_matches: null
+  production_build_matches_proof: null
+  evidence_paths: []
+  checked_at: null

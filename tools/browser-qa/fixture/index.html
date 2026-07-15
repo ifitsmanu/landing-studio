@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Landing Studio browser QA fixture">
+  <link rel="icon" href="data:,">
+  <title>Landing Studio QA Fixture</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --ink: #101828;
+      --muted: #475467;
+      --accent: #075985;
+      --accent-ink: #ffffff;
+      --line: #cbd5e1;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #090d14;
+        --surface: #111827;
+        --ink: #f8fafc;
+        --muted: #cbd5e1;
+        --accent: #67e8f9;
+        --accent-ink: #082f49;
+        --line: #475569;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.55 system-ui, sans-serif;
+    }
+    a, button { font: inherit; }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .shell { width: min(1120px, calc(100% - 32px)); margin-inline: auto; }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .nav-row { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { color: var(--ink); font-weight: 800; text-decoration: none; }
+    #menu-button { display: none; min-width: 44px; min-height: 44px; }
+    nav { display: flex; gap: 24px; align-items: center; }
+    nav a { color: var(--ink); }
+    section { padding: 96px 0; border-bottom: 1px solid var(--line); }
+    .hero { min-height: 72vh; display: grid; align-items: center; grid-template-columns: 1.3fr 0.7fr; gap: 64px; }
+    h1 { max-width: 13ch; font-size: clamp(42px, 7vw, 82px); line-height: 0.98; letter-spacing: -0.045em; margin: 0 0 24px; }
+    h2 { font-size: clamp(30px, 4vw, 48px); line-height: 1.05; margin: 0 0 24px; }
+    p { max-width: 65ch; color: var(--muted); }
+    .primary {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      border: 0;
+      border-radius: 999px;
+      padding: 0 24px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card { min-height: 180px; padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
+    .orb {
+      width: min(30vw, 280px);
+      aspect-ratio: 1;
+      margin-inline: auto;
+      border-radius: 42% 58% 65% 35%;
+      background: linear-gradient(135deg, var(--accent), transparent 70%);
+      animation: breathe 2s ease-in-out infinite alternate;
+    }
+    @keyframes breathe { to { transform: scale(1.08) rotate(4deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .orb { animation: none; }
+    }
+    .status { min-height: 28px; color: var(--ink); }
+    footer { padding: 48px 0; }
+
+    @media (max-width: 680px) {
+      #menu-button { display: inline-flex; align-items: center; justify-content: center; }
+      nav[hidden] { display: none; }
+      nav {
+        position: absolute;
+        inset: 72px 16px auto;
+        padding: 20px;
+        flex-direction: column;
+        align-items: stretch;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+      }
+      .hero { min-height: auto; grid-template-columns: 1fr; gap: 40px; }
+      section { padding: 64px 0; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .orb { width: 70vw; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell nav-row">
+      <a class="brand" href="#top">Landing Studio Fixture</a>
+      <button id="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" aria-label="Primary">
+        <a href="#proof">Proof</a>
+        <a href="#conversion">Conversion</a>
+      </nav>
+    </div>
+  </header>
+  <main id="top">
+    <section class="shell hero" data-qa-section="hero" aria-labelledby="hero-heading">
+      <div>
+        <h1 id="hero-heading">Evidence before release.</h1>
+        <p>A deterministic fixture for responsive, interaction, accessibility, console, request, and visual evidence.</p>
+        <button class="primary" id="primary-cta" type="button">Request fixture demo</button>
+        <p class="status" id="cta-status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="orb" id="motion-proof" aria-hidden="true"></div>
+    </section>
+    <section id="proof" data-qa-section="proof">
+      <div class="shell">
+        <h2>One report, inspectable artifacts.</h2>
+        <div class="proof-grid">
+          <article class="card"><h3>Browser</h3><p>Viewport and preference metadata accompany every case.</p></article>
+          <article class="card"><h3>Journey</h3><p>The primary CTA completes against a first-party endpoint.</p></article>
+          <article class="card"><h3>Evidence</h3><p>Screenshots, traces, console, requests, and axe results remain reviewable.</p></article>
+        </div>
+      </div>
+    </section>
+    <section id="conversion" data-qa-section="conversion">
+      <div class="shell">
+        <h2>The finish line is observable.</h2>
+        <p>The QA harness scrolls here, opens the responsive menu, and completes the conversion before it can pass.</p>
+      </div>
+    </section>
+  </main>
+  <footer><div class="shell">Landing Studio browser evidence fixture</div></footer>
+  <script>
+    const menu = document.getElementById('menu-button');
+    const nav = document.getElementById('site-nav');
+    const mobile = matchMedia('(max-width: 680px)');
+
+    function syncMenu() {
+      if (mobile.matches) {
+        nav.hidden = menu.getAttribute('aria-expanded') !== 'true';
+      } else {
+        nav.hidden = false;
+        menu.setAttribute('aria-expanded', 'false');
+      }
+    }
+    menu.addEventListener('click', () => {
+      menu.setAttribute('aria-expanded', String(menu.getAttribute('aria-expanded') !== 'true'));
+      syncMenu();
+    });
+    mobile.addEventListener('change', syncMenu);
+    syncMenu();
+
+    document.getElementById('primary-cta').addEventListener('click', async () => {
+      document.getElementById('primary-cta').remove();
+      const status = document.getElementById('cta-status');
+      status.textContent = 'Requesting…';
+      const response = await fetch('/api/cta', { method: 'POST' });
+      const payload = await response.json();
+      status.textContent = payload.message;
+    });
+
+    if (new URLSearchParams(location.search).get('negative') === '1') {
+      console.error('intentional fixture console failure');
+      fetch('/api/intentional-failure');
+    }
+  </script>
+</body>
+</html>

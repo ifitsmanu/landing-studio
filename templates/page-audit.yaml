@@ -1,0 +1,26 @@
+schema_version: 1.0.0
+run_id: ls_0000000000000000
+page_id: home
+url: http://127.0.0.1:3000/
+kind: full-page-browser
+decision: BLOCK
+captured_at: 2026-07-15T12:00:00.000Z
+commit: "0000000000000000000000000000000000000000"
+checks:
+  - { name: responsive-mobile, passed: false, evidence: Replace with observed evidence }
+  - { name: responsive-desktop, passed: false, evidence: Replace with observed evidence }
+  - { name: reduced-motion, passed: false, evidence: Replace with observed evidence }
+  - { name: primary-journey, passed: false, evidence: Replace with observed evidence }
+  - { name: accessibility, passed: false, evidence: Replace with observed evidence }
+  - { name: console-network, passed: false, evidence: Replace with observed evidence }
+  - { name: performance, passed: false, evidence: Replace with observed evidence }
+  - { name: privacy-consent, passed: false, evidence: Replace with observed evidence }
+  - { name: forms, passed: false, evidence: Replace with observed evidence }
+  - { name: metadata, passed: false, evidence: Replace with observed evidence }
+evidence:
+  - path: artifacts/page-audit/browser-report.json
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+producer_context_id: producer-context
+reviewer_context_id: null
+fresh_context: false
+findings: []

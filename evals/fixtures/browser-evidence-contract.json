@@ -1,0 +1,55 @@
+{
+  "input": { "request": "Call the hero browser-verified only with retained cross-browser evidence." },
+  "observed": {
+    "schema_version": "1.0.0",
+    "run_id": "eval-browser",
+    "section_id": "hero",
+    "url": "http://127.0.0.1:4173/",
+    "commit": "fixture-commit",
+    "captured_at": "2026-07-15T12:00:00.000Z",
+    "projects": [
+      {
+        "id": "chromium-desktop", "name": "chromium", "browser": "chromium",
+        "viewport": { "width": 1440, "height": 900 }, "preferences": { "colorScheme": "light", "reducedMotion": "no-preference" },
+        "journey": { "passed": true, "steps": [{ "name": "primary-cta", "passed": true }], "error": null },
+        "accessibility": { "url": "http://127.0.0.1:4173/", "violations": [], "blocking_violations": 0 },
+        "console": { "messages": [], "errors": [], "pageErrors": [] }, "network": { "failed": [], "failed_first_party": [] },
+        "evidence": { "viewport": { "width": 1440, "height": 900 }, "screenshots": ["chromium-viewport.png", "chromium-full.png", "chromium-section.png", "chromium-journey.png"], "trace": "chromium-trace.zip", "missing": [], "section_screenshot_count": 1, "journey_screenshot_count": 1 },
+        "blockers": []
+      },
+      {
+        "id": "firefox-mobile", "name": "firefox", "browser": "firefox",
+        "viewport": { "width": 390, "height": 844 }, "preferences": { "colorScheme": "light", "reducedMotion": "no-preference" },
+        "journey": { "passed": true, "steps": [{ "name": "primary-cta", "passed": true }], "error": null },
+        "accessibility": { "url": "http://127.0.0.1:4173/", "violations": [], "blocking_violations": 0 },
+        "console": { "messages": [], "errors": [], "pageErrors": [] }, "network": { "failed": [], "failed_first_party": [] },
+        "evidence": { "viewport": { "width": 390, "height": 844 }, "screenshots": ["firefox-viewport.png", "firefox-full.png", "firefox-section.png", "firefox-journey.png"], "trace": "firefox-trace.zip", "missing": [], "section_screenshot_count": 1, "journey_screenshot_count": 1 },
+        "blockers": []
+      },
+      {
+        "id": "webkit-reduced", "name": "webkit", "browser": "webkit",
+        "viewport": { "width": 1440, "height": 900 }, "preferences": { "colorScheme": "light", "reducedMotion": "reduce" },
+        "journey": { "passed": true, "steps": [{ "name": "primary-cta", "passed": true }], "error": null },
+        "accessibility": { "url": "http://127.0.0.1:4173/", "violations": [], "blocking_violations": 0 },
+        "console": { "messages": [], "errors": [], "pageErrors": [] }, "network": { "failed": [], "failed_first_party": [] },
+        "evidence": { "viewport": { "width": 1440, "height": 900 }, "screenshots": ["webkit-viewport.png", "webkit-full.png", "webkit-section.png", "webkit-journey.png"], "trace": "webkit-trace.zip", "missing": [], "section_screenshot_count": 1, "journey_screenshot_count": 1 },
+        "blockers": []
+      }
+    ],
+    "journeys": [
+      { "project": "chromium", "passed": true, "steps": [{ "name": "primary-cta", "passed": true }], "error": null },
+      { "project": "firefox", "passed": true, "steps": [{ "name": "primary-cta", "passed": true }], "error": null },
+      { "project": "webkit", "passed": true, "steps": [{ "name": "primary-cta", "passed": true }], "error": null }
+    ],
+    "console_errors": [], "failed_requests": [], "axe": { "blocking_violations": 0, "violations": [] },
+    "artifacts": [
+      { "project": "chromium", "type": "screenshot", "path": "chromium-viewport.png", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+      { "project": "chromium", "type": "trace", "path": "chromium-trace.zip", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+      { "project": "firefox", "type": "screenshot", "path": "firefox-viewport.png", "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" },
+      { "project": "firefox", "type": "trace", "path": "firefox-trace.zip", "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" },
+      { "project": "webkit", "type": "screenshot", "path": "webkit-viewport.png", "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" },
+      { "project": "webkit", "type": "trace", "path": "webkit-trace.zip", "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" }
+    ],
+    "decision": "PASS"
+  }
+}

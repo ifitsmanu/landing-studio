@@ -1,0 +1,11 @@
+{
+  "input": { "request": "Approve the hero direction and implement only the hero." },
+  "observed": {
+    "active_section_id": "hero",
+    "implementation_scope": ["hero"],
+    "sections": [
+      { "id": "hero", "stage": "direction_approved", "locked": false },
+      { "id": "proof", "stage": "queued", "locked": false }
+    ]
+  }
+}

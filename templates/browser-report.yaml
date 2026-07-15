@@ -1,0 +1,41 @@
+schema_version: 1.0.0
+run_id: ls_0000000000000000
+section_id: hero
+url: http://127.0.0.1:3000/
+commit: "0000000"
+captured_at: 2026-01-01T00:00:00.000Z
+projects:
+  - id: desktop-light
+    name: chromium-desktop-light
+    browser: chromium
+    viewport: { width: 1440, height: 900 }
+    preferences: { colorScheme: light, reducedMotion: no-preference }
+    journey: { passed: false, steps: [], error: replace-with-journey-result }
+    accessibility: { url: http://127.0.0.1:3000/, violations: [], blocking_violations: 0 }
+    console: { messages: [], errors: [], pageErrors: [] }
+    network: { failed: [], failed_first_party: [] }
+    evidence:
+      viewport: { width: 1440, height: 900 }
+      screenshots: []
+      trace: replace-with-trace-path
+      missing: [replace-with-evidence]
+      section_screenshot_count: 0
+      journey_screenshot_count: 0
+    blockers:
+      - { category: missing-evidence }
+journeys:
+  - project: chromium-desktop-light
+    passed: false
+    steps: []
+    error: replace-with-journey-result
+console_errors: []
+failed_requests: []
+axe:
+  blocking_violations: 0
+  violations: []
+artifacts:
+  - project: chromium-desktop-light
+    type: trace
+    path: replace-with-trace-path
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+decision: BLOCK

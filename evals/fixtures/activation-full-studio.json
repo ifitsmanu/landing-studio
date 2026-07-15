@@ -1,0 +1,9 @@
+{
+  "input": { "request": "Build a researched launch page, one section at a time, then verify and red-team it." },
+  "observed": {
+    "primary_skill": "landing-page-build",
+    "activated_skills": ["landing-research", "creative-direction", "landing-copywriter", "landing-page-design", "landing-page-implementation", "landing-page-qa", "landing-red-team"],
+    "production_scope": "one-section-at-a-time",
+    "state_path": ".landing-studio/run.yaml"
+  }
+}

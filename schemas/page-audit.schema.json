@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ifitsmanu.github.io/landing-studio/schemas/page-audit.schema.json",
+  "title": "Landing Studio whole-page audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "page_id", "url", "kind", "decision", "captured_at", "commit", "checks", "evidence", "producer_context_id", "reviewer_context_id", "fresh_context", "findings"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "run_id": { "type": "string", "pattern": "^ls_[a-f0-9]{16}$" },
+    "page_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "url": { "type": "string", "pattern": "^https?://" },
+    "kind": { "enum": ["full-page-browser", "search-audits", "final-red-team"] },
+    "decision": { "enum": ["PASS", "BLOCK"] },
+    "captured_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$" },
+    "commit": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "passed", "evidence"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "passed": { "type": "boolean" },
+          "evidence": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "producer_context_id": { "type": "string", "minLength": 1 },
+    "reviewer_context_id": { "type": ["string", "null"] },
+    "fresh_context": { "type": "boolean" },
+    "findings": { "type": "array", "items": { "$ref": "#/definitions/finding" } }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "decision": { "const": "PASS" } }, "required": ["decision"] },
+      "then": { "properties": { "checks": { "type": "array", "items": { "type": "object", "properties": { "passed": { "const": true } }, "required": ["passed"] } } } }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "final-red-team" } }, "required": ["kind"] },
+      "then": {
+        "properties": {
+          "reviewer_context_id": { "type": "string", "minLength": 1 },
+          "fresh_context": { "const": true }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "summary", "evidence", "impact", "acceptance_test", "disposition", "owner", "disposition_note"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["P0", "P1", "P2", "P3"] },
+        "summary": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "string", "minLength": 1 },
+        "impact": { "type": "string", "minLength": 1 },
+        "acceptance_test": { "type": "string", "minLength": 1 },
+        "disposition": { "enum": ["open", "fixed", "accepted", "rejected"] },
+        "owner": { "type": ["string", "null"] },
+        "disposition_note": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

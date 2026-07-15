@@ -51,20 +51,26 @@ has headroom; never pre-crush for social.
 
 ## The poster frame
 
-The poster is **designed, not extracted at random** — it's frame one by
-construction (the beat sheet made frame one a poster; that was the point):
+The poster is **designed, not extracted at random**. Select its timestamp in the
+beat sheet, capture it explicitly, and fail the pipeline if the frame is blank:
 
 ```bash
-# Extract the designed frame (here: frame 0)
-ffmpeg -i master.mp4 -vf "select=eq(n\,0)" -frames:v 1 -q:v 2 poster.jpg
+# capture.mjs requires --poster-time and writes poster.png
+node capture.mjs --url scene.html --out frames --fps 30 --duration 4 \
+  --width 1920 --height 1080 --poster-time 2
+
+# encode.sh consumes that exact poster rather than guessing from the video
+./encode.sh frames 30 dist/master --poster frames/poster.png
+
 # WebP variant for pages that prefer it
-ffmpeg -i poster.jpg -quality 85 poster.webp
+ffmpeg -i dist/master-poster.jpg -quality 85 poster.webp
 ```
 
 The poster serves three duties with one file: the `<video poster>` attribute,
 the social share card (or its basis), and the `prefers-reduced-motion`
-fallback. If frame one ever changes, the poster regenerates — they are the
-same design object.
+fallback. Its selected time and nonblank inspection are retained in
+`capture-metadata.json`; the encode outputs are recorded in
+`dist/master-metadata.json`.
 
 ## Captions
 
@@ -104,10 +110,12 @@ ffmpeg -i master.mp4 -vf "crop=864:1080:528:0" ... cut-4x5.mp4
 # only acceptable if the beat sheet planned the vertical-safe zone.
 ```
 
-Offsets (`x:y`) are parameters, not constants — when a scene's action sits off-
-center, per-scene offsets beat one global crop; `cutdowns.sh` accepts them.
-Re-timing (the 1.5s feed hook) is an *edit* decision from the beat sheet's
-cutdown tags, not an ffmpeg trim of the master's opening.
+Offsets (`x:y`) are composition decisions, not universal constants. The bundled
+`cutdowns.sh` validates any even-dimension exact 16:9 master and labels its
+center crops as fallbacks. Prefer native art-directed files via
+`--native-1x1`, `--native-4x5`, and `--native-9x16`. Re-timing (the 1.5s feed
+hook) is an *edit* decision from the beat sheet's cutdown tags, not an ffmpeg
+trim of the master's opening.
 
 ## Hero loop
 

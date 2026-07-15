@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ifitsmanu.github.io/landing-studio/schemas/red-team-report.schema.json",
+  "title": "Landing Studio independent red-team report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "section_id", "reviewer", "reviewer_context_id", "producer_context_id", "fresh_context", "reviewed_at", "evidence_bundle", "findings", "decision"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "section_id": { "type": "string", "minLength": 1 },
+    "reviewer": { "type": "string", "minLength": 1 },
+    "reviewer_context_id": { "type": "string", "minLength": 1 },
+    "producer_context_id": { "type": "string", "minLength": 1 },
+    "fresh_context": { "type": "boolean" },
+    "reviewed_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$" },
+    "evidence_bundle": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/evidence" } },
+    "findings": { "type": "array", "items": { "$ref": "#/definitions/finding" } },
+    "decision": { "enum": ["PASS", "BLOCK"] }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "decision": { "const": "PASS" } } },
+      "then": { "properties": { "fresh_context": { "const": true } } }
+    }
+  ],
+  "definitions": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path", "sha256"],
+      "properties": {
+        "kind": { "enum": ["browser-report", "screenshot", "trace", "ledger", "source", "other"] },
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "summary", "evidence", "violated_principle", "impact", "acceptance_test", "disposition", "owner", "disposition_note"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "severity": { "enum": ["P0", "P1", "P2", "P3"] },
+        "summary": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "string", "minLength": 1 },
+        "violated_principle": { "type": "string", "minLength": 1 },
+        "impact": { "type": "string", "minLength": 1 },
+        "acceptance_test": { "type": "string", "minLength": 1 },
+        "disposition": { "enum": ["open", "fixed", "accepted", "rejected"] },
+        "owner": { "type": ["string", "null"] },
+        "disposition_note": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

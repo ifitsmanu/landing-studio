@@ -1,0 +1,73 @@
+workpaper_version: "1.0"
+canonical_release_template: "../../../templates/media-ledger.yaml"
+asset_id: ""
+rendition_id: ""
+active_scope:
+  page: ""
+  section_id: ""
+  role: ""
+status: "RIGHTS_UNVERIFIED"
+production_lane: "owned | capture | commission | license | generate"
+source:
+  canonical_asset_url: ""
+  creator_or_rights_holder: ""
+  provider: ""
+  acquisition_date: "YYYY-MM-DD"
+  receipt_or_agreement_reference: ""
+license:
+  identifier_and_version: ""
+  terms_or_snapshot_url: ""
+  allowed_channels: []
+  commercial_use: null
+  paid_media: null
+  modifications_allowed: null
+  attribution_required: null
+  attribution_text_and_placement: ""
+  restrictions: []
+  territory: ""
+  starts_at: null
+  expires_at: null
+  revocation_or_review_trigger: ""
+subject_rights:
+  identifiable_people: []
+  model_release_status: "NOT_APPLICABLE | VERIFIED | BLOCKED"
+  model_release_references: []
+  property_or_location: []
+  property_release_status: "NOT_APPLICABLE | VERIFIED | BLOCKED"
+  property_release_references: []
+  trademarks_products_art_architecture: []
+  endorsement_or_sensitive_context_review: ""
+  reviewer_and_date: ""
+generative_provenance:
+  applicable: false
+  provider: ""
+  model_and_version_if_exposed: ""
+  governing_terms_date: ""
+  generation_date: null
+  prompt_or_job_reference: ""
+  reference_input_ledger_ids: []
+  human_edits: []
+  disclosure_required: null
+file:
+  original_filename: ""
+  original_content_hash: "sha256:"
+  rendition_content_hash: "sha256:"
+  local_original_path: ""
+  local_rendition_path: ""
+  mime_type: ""
+  dimensions_or_duration: ""
+  transformations: []
+delivery:
+  responsive_crops: []
+  alt_or_decorative_behavior: ""
+  captions_or_transcript_path: ""
+  poster_or_static_fallback_path: ""
+  reduced_motion_behavior: ""
+  measured_transfer_bytes: null
+approval:
+  rights_owner: ""
+  approved_by: null
+  approved_at: null
+  next_review_at: null
+  evidence_references: []
+  blocking_reason: ""

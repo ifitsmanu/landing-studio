@@ -23,15 +23,16 @@ isn't a compose engine for this skill.
 
 | Rank | Engine | Requires | Choose when |
 |---|---|---|---|
-| 1 | **Remotion** | Node + React | Default whenever React/Node is available |
+| 1 | **Remotion** | Node + React | Composition benefits from shared React scenes, data, or native aspect variants |
 | 2 | **Motion Canvas** | Node + TS | The film is primarily animated diagrams/explainer motion |
 | 3 | **Vendored scene kit** | Node + Playwright browser + ffmpeg | Reproducible fallback when dependencies are installed |
 | 4 | **After Effects handoff** | A human motion designer | A pro editor owns the compose stage |
 
-## Remotion
+## Remotion composition lane
 
-The film as React components; render via headless Chromium. The strongest fit
-for this skill's architecture because the **brand kit becomes `defaultProps`**:
+The film as React components; render via headless Chromium. Choose this lane
+when React composition provides enough leverage to justify its dependency and
+license review. The **brand kit becomes `defaultProps`**:
 
 - One `<Composition>` per placement, all sharing scene components; a
   `calculateMetadata` derives `durationInFrames/width/height/fps` per placement
@@ -55,10 +56,13 @@ const t = interpolate(frame, [3 * fps, 3 * fps + 0.4 * fps], [0, 1],
 
 - Real-UI footage drops in as `<OffthreadVideo>` layers under staged type;
   `<Audio>` aligns the music grid to exact frames.
-- **Licensing note**: Remotion is source-available, free for individuals and
-  small teams, but requires a paid **company license above its team-size
-  threshold** (currently ~4+ employees — verify current terms). Flag this to
-  the user before choosing it inside a company.
+- **Licensing note**: Remotion has usage-dependent terms. Verify the current
+  official license for the team and rendering model before adoption; do not
+  repeat a remembered employee threshold as current fact.
+
+Remotion owns composition: scene timing, layout, typography, and native aspect
+variants. FFmpeg remains the deterministic encode/inspection lane for delivery
+codecs, pixel format, posters, metadata, and final cutdowns.
 
 ## Motion Canvas
 

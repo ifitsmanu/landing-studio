@@ -1,0 +1,219 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ifitsmanu.github.io/landing-studio/schemas/run.schema.json",
+  "title": "Landing Studio run manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run", "project", "capabilities", "page", "findings", "skips", "release"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "created_at", "updated_at", "requested_outcome", "success_metric", "producer_context_id"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^ls_[a-f0-9]{16}$" },
+        "created_at": { "$ref": "#/definitions/timestamp" },
+        "updated_at": { "$ref": "#/definitions/timestamp" },
+        "requested_outcome": { "type": "string", "minLength": 1 },
+        "success_metric": { "type": "string", "minLength": 1 },
+        "producer_context_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["root", "route", "page_id", "test_base_url"],
+      "properties": {
+        "root": { "type": "string", "minLength": 1 },
+        "route": { "type": "string", "minLength": 1 },
+        "page_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "test_base_url": { "type": "string", "pattern": "^https?://" }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["current_research", "interactive_browser", "screenshot_evidence", "image_generation", "video_generation", "independent_critic", "webgl_3d"],
+      "properties": {
+        "current_research": { "$ref": "#/definitions/capability" },
+        "interactive_browser": { "$ref": "#/definitions/capability" },
+        "screenshot_evidence": { "$ref": "#/definitions/capability" },
+        "image_generation": { "$ref": "#/definitions/capability" },
+        "video_generation": { "$ref": "#/definitions/capability" },
+        "independent_critic": { "$ref": "#/definitions/capability" },
+        "webgl_3d": { "$ref": "#/definitions/capability" }
+      }
+    },
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frame", "active_section_id", "sections", "final_artifacts"],
+      "properties": {
+        "frame": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact", "approval"],
+          "properties": {
+            "artifact": { "anyOf": [{ "$ref": "#/definitions/artifact" }, { "type": "null" }] },
+            "approval": { "anyOf": [{ "$ref": "#/definitions/frameDecision" }, { "type": "null" }] }
+          }
+        },
+        "active_section_id": { "type": ["string", "null"] },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/section" }
+        },
+        "final_artifacts": { "type": "array", "items": { "$ref": "#/definitions/pageArtifact" } }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/finding" }
+    },
+    "skips": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stage", "reason", "evidence", "risk", "substitute", "approved_by", "recorded_at"],
+        "properties": {
+          "stage": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 },
+          "evidence": { "type": "string", "minLength": 1 },
+          "risk": { "type": "string", "minLength": 1 },
+          "substitute": { "type": "string", "minLength": 1 },
+          "approved_by": { "type": "string", "minLength": 1 },
+          "recorded_at": { "$ref": "#/definitions/timestamp" }
+        }
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "checked_at", "blockers", "unresolved_risks"],
+      "properties": {
+        "decision": { "enum": ["UNASSESSED", "SHIP", "BLOCK"] },
+        "checked_at": { "type": ["string", "null"] },
+        "blockers": { "type": "array", "items": { "type": "string" } },
+        "unresolved_risks": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "definitions": {
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "evidence"],
+      "properties": {
+        "status": { "enum": ["native", "fallback", "unavailable", "not-needed"] },
+        "evidence": { "type": "string", "minLength": 1 }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "stage", "kind", "path", "sha256", "recorded_at", "stale"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^artifact_[a-f0-9]{16}$" },
+        "stage": { "enum": ["page-frame", "research", "creative", "implementation", "browser", "red-team", "page-audit"] },
+        "kind": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "recorded_at": { "$ref": "#/definitions/timestamp" },
+        "stale": { "type": "boolean" }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage", "by", "note", "recorded_at"],
+      "properties": {
+        "stage": { "enum": ["direction", "section"] },
+        "by": { "type": "string", "minLength": 1 },
+        "note": { "type": "string", "minLength": 1 },
+        "recorded_at": { "$ref": "#/definitions/timestamp" }
+      }
+    },
+    "frameDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["by", "note", "recorded_at"],
+      "properties": {
+        "by": { "type": "string", "minLength": 1 },
+        "note": { "type": "string", "minLength": 1 },
+        "recorded_at": { "$ref": "#/definitions/timestamp" }
+      }
+    },
+    "pageArtifact": {
+      "allOf": [
+        { "$ref": "#/definitions/artifact" },
+        { "properties": { "stage": { "const": "page-audit" }, "kind": { "enum": ["full-page-browser", "search-audits", "final-red-team"] } } }
+      ]
+    },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "order", "status", "locked", "stale", "stale_reasons", "locks", "artifacts", "approvals", "rejections"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "title": { "type": "string", "minLength": 1 },
+        "order": { "type": "integer", "minimum": 1 },
+        "status": {
+          "enum": ["queued", "research_ready", "direction_ready", "direction_approved", "implemented", "browser_verified", "red_team_reviewed", "approved", "rejected", "stale"]
+        },
+        "locked": { "type": "boolean" },
+        "stale": { "type": "boolean" },
+        "stale_reasons": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "locks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["direction"],
+          "properties": { "direction": { "type": "boolean" } }
+        },
+        "artifacts": { "type": "array", "items": { "$ref": "#/definitions/artifact" } },
+        "approvals": { "type": "array", "items": { "$ref": "#/definitions/decision" } },
+        "rejections": { "type": "array", "items": { "$ref": "#/definitions/decision" } }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "section_id", "severity", "summary", "evidence", "acceptance_test", "disposition", "owner", "note", "reported_by", "resolved_by", "verification_artifact", "created_at", "updated_at"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$" },
+        "section_id": { "type": ["string", "null"] },
+        "severity": { "enum": ["P0", "P1", "P2", "P3"] },
+        "summary": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "string", "minLength": 1 },
+        "acceptance_test": { "type": "string", "minLength": 1 },
+        "disposition": { "enum": ["open", "fixed", "accepted", "rejected"] },
+        "owner": { "type": ["string", "null"] },
+        "note": { "type": ["string", "null"] },
+        "reported_by": { "type": "string", "minLength": 1 },
+        "resolved_by": { "type": ["string", "null"] },
+        "verification_artifact": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "sha256"],
+              "properties": {
+                "path": { "type": "string", "minLength": 1 },
+                "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "created_at": { "$ref": "#/definitions/timestamp" },
+        "updated_at": { "$ref": "#/definitions/timestamp" }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+name: Skill or workflow proposal
+description: Propose a new specialist or a material contract change.
+title: "[Proposal]: "
+labels: [proposal]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Recurring problem
+      description: Who has it, how often, and why existing skills cannot solve it.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and current workaround
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Proposed activation boundary and artifacts
+      description: State when it should and should not trigger, inputs, outputs, gates, and failure behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Executable acceptance tests
+    validations:
+      required: true
+  - type: textarea
+    id: cost
+    attributes:
+      label: Maintenance, security, privacy, rights, and compatibility cost

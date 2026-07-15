@@ -1,0 +1,22 @@
+schema_version: 1.0.0
+run_id: ls_0000000000000000
+section_id: hero
+route: /
+source_files:
+  - path: replace-with-source-file
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+build:
+  command: replace-with-build-command
+  exit_code: 0
+  evidence:
+    path: replace-with-build-log
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+tests:
+  command: replace-with-test-command
+  exit_code: 0
+  evidence:
+    path: replace-with-test-log
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+claims_used: []
+media_assets_used: []
+dependencies_used: []

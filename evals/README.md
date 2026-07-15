@@ -1,35 +1,40 @@
-# Evaluation protocol
+# Executable evaluation protocol
 
-`evals.json` is a behavior suite, not a keyword checklist. Run each prompt against a clean target
-project with the relevant Landing Studio skill available, capture the complete response and artifacts,
-then grade every assertion from observable evidence.
+Behavioral runs follow the official Agent Skills [evaluation](https://agentskills.io/skill-creation/evaluating-skills)
+and [description-optimization](https://agentskills.io/skill-creation/optimizing-descriptions) guidance:
+clean contexts, realistic varied prompts, with-skill comparisons, retained outputs and timing,
+independent grading, human review, and repeated trigger/non-trigger queries. The deterministic fixtures
+below are contract regressions, not a substitute for those runs.
 
-## Run record
+The committed suite in `evals.json` runs nine deterministic contract cases covering activation,
+non-activation, one-section orchestration, claims integrity, approval locks, media rights, browser
+evidence, 3D fallback, and P1 red-team blocking.
 
-Record for each run:
+Run it with:
 
-- repository commit or working-tree identifier;
-- agent/model and version;
-- date and source-document cutoff;
-- target stack and supplied fixtures;
-- output/artifact paths;
-- assertion result: `PASS`, `FAIL`, or `NOT TESTED`;
-- exact evidence or failure reason;
-- grader identity/model, kept independent from the generating run when possible.
+```bash
+npm run evals
+node scripts/run-evals.mjs --json
+```
 
-An assertion passes only when the output explicitly demonstrates it. Missing evidence is not a pass.
-Do not award credit for mentioning a concept without performing the required decision, check, or
-handoff. Re-run failed assertions after a fix and retain both results so regressions remain visible.
+Each case retains both its input request and structured observed fixture. The runner resolves JSON
+Pointers, executes weighted assertions, validates evidence objects against repository schemas, and
+compares the complete deterministic result with `results/v1.0.0-baseline.json`. Missing fixtures,
+rubrics, schemas, or changed observations fail the command.
 
-## Required coverage
+To intentionally refresh the baseline after reviewing a contract change:
 
-The five scenarios cover:
+```bash
+SOURCE_DATE_EPOCH=<unix-seconds> node scripts/run-evals.mjs --write
+git diff -- evals/results/v1.0.0-baseline.json
+```
 
-1. full evidence-first orchestration in an existing Next.js project;
-2. rejection of obsolete or unsupported AEO/GEO tactics;
-3. ethical, consent-aware CRO and behavioral analytics;
-4. professional motion/video with rights, truth, accessibility, and page-performance controls;
-5. browser-based release QA beyond a passing build.
+## What this proves
 
-Update the suite when a search engine, crawler, browser, privacy requirement, or supported production
-path changes. Verify unstable assertions against current primary sources before grading.
+The deterministic suite proves the repository's fixture contracts and release policies are
+machine-gradable. It does not prove that a live model will activate the right skill or produce the
+canonical fixture. That requires a clean-context model run with complete prompts, outputs,
+artifacts, runtime version, model identifier, commit, and independent grading retained in-repo.
+
+Every cross-model row remains `unrun` until that evidence exists. The runner rejects a claimed
+cross-model result whose evidence path is missing.
