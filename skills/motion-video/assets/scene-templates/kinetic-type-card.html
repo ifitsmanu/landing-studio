@@ -1,0 +1,121 @@
+<!doctype html>
+<!--
+  KINETIC TYPE CARD — gated-CSS scene template (motion-video skill)
+  A claim/section card: blur-up reveal, or per-word cascade for the film's
+  ONE payoff line (references/kinetic-type.md — the cascade budget is 1/film).
+
+  URL params:
+    text=...       the card's words (≤7 — enforced visually, count them in the beat sheet)
+    sub=...        optional quiet subline
+    cascade=1      per-word cascade instead of blur-up (payoff line only)
+    accent=last    color the final word with the kit accent (punctuation rule)
+    preview=1      autoplay in a normal browser for design review
+
+  Timeline (seeked by capture.mjs; nothing plays until html.play):
+    0.00s  reveal begins (dur-3 = 400ms, ease-out)
+    0.40s  card fully legible — reading time starts
+    hold   until capture duration (poster-grade rest state)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kinetic-type-card</title>
+<link rel="stylesheet" href="brand.example.css">
+<link rel="stylesheet" href="brand.css"><!-- kit override; 404s harmlessly if absent -->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    background: var(--mv-bg);
+    color: var(--mv-fg);
+    display: grid;
+    place-items: center;
+    font-family: var(--mv-font-display);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .stage { text-align: center; padding: 0 8vw; max-width: 90vw; }
+
+  .claim {
+    font-size: clamp(48px, 9vmin, 160px);   /* ≥72px @1080p — legibility floor */
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .claim .word { display: inline-block; white-space: pre; }
+  .claim .word.accented { color: var(--mv-accent); }
+
+  .sub {
+    margin-top: 2.2vmin;
+    font-family: var(--mv-font-body);
+    font-size: clamp(20px, 2.6vmin, 40px);
+    font-weight: 400;
+    color: var(--mv-muted);
+  }
+
+  /* ---- Gated motion: declared always, played only under html.play ---- */
+  .claim, .sub { opacity: 0; }                 /* pre-roll state           */
+  html.play .claim.blurup {
+    animation: blur-up var(--mv-dur-3) var(--mv-ease-out) 0s forwards;
+  }
+  html.play .claim.cascade { opacity: 1; }     /* words animate, not the block */
+  html.play .claim.cascade .word {
+    opacity: 0;
+    animation: word-in var(--mv-dur-3) var(--mv-ease-out) forwards;
+    animation-delay: calc(var(--i) * 60ms);    /* reading order, 60ms offset */
+  }
+  html.play .sub {
+    animation: rise-in var(--mv-dur-3) var(--mv-ease-out) 300ms forwards;
+  }
+
+  @keyframes blur-up {
+    from { opacity: 0; filter: blur(12px); transform: translateY(16px); }
+    to   { opacity: 1; filter: blur(0);    transform: translateY(0); }
+  }
+  @keyframes word-in {
+    from { opacity: 0; filter: blur(8px); transform: translateY(0.35em); }
+    to   { opacity: 1; filter: blur(0);   transform: translateY(0); }
+  }
+  @keyframes rise-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <h1 class="claim" id="claim"></h1>
+    <p class="sub" id="sub" hidden></p>
+  </main>
+
+  <script>
+    const q = new URLSearchParams(location.search);
+    const text = q.get('text') || 'Set ?text= from the beat sheet';
+    const words = text.split(' ');
+    if (words.length > 7) console.warn('motion-video: card exceeds 7 words — fix the beat sheet, not the card');
+
+    const claim = document.getElementById('claim');
+    claim.className = 'claim ' + (q.get('cascade') === '1' ? 'cascade' : 'blurup');
+    words.forEach((w, i) => {
+      const s = document.createElement('span');
+      s.className = 'word' +
+        (q.get('accent') === 'last' && i === words.length - 1 ? ' accented' : '');
+      s.style.setProperty('--i', i);
+      s.textContent = w + (i < words.length - 1 ? ' ' : '');
+      claim.appendChild(s);
+    });
+
+    const sub = document.getElementById('sub');
+    if (q.get('sub')) { sub.hidden = false; sub.textContent = q.get('sub'); }
+
+    // Preview mode: play in real time after fonts settle (design review only;
+    // capture.mjs controls the clock itself and ignores this).
+    if (q.get('preview') === '1') {
+      document.fonts.ready.then(() =>
+        requestAnimationFrame(() => document.documentElement.classList.add('play')));
+    }
+  </script>
+</body>
+</html>

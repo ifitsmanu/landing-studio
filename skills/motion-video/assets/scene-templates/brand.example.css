@@ -1,0 +1,48 @@
+/* ============================================================================
+   BRAND KIT VARIABLES — PLACEHOLDER SHEET
+   Copy to brand.css and replace EVERY value from the project's brand kit
+   (references/brand-kit.md). Nothing here is a real brand; these neutrals
+   exist only so templates render before the kit arrives. Shipping a film on
+   these values is a brand-kit-conformance failure (references/qa.md).
+   ========================================================================== */
+:root {
+  /* --- Color (brand.colors) ------------------------------------------- */
+  --mv-bg:      #101012;   /* REPLACE: canvas / background */
+  --mv-fg:      #f4f4f2;   /* REPLACE: ink / primary text */
+  --mv-accent:  #9a9a9a;   /* REPLACE: THE accent — punctuation, not wash.
+                              Deliberately grey here so an unfilled kit is
+                              visible at a glance in every preview. */
+  --mv-muted:   color-mix(in srgb, var(--mv-fg) 55%, var(--mv-bg));
+  --mv-surface: color-mix(in srgb, var(--mv-fg) 7%,  var(--mv-bg));
+  --mv-border:  color-mix(in srgb, var(--mv-fg) 14%, var(--mv-bg));
+
+  /* --- Type (brand.type — load real files via @font-face below) -------- */
+  --mv-font-display: ui-sans-serif, system-ui, sans-serif;  /* REPLACE */
+  --mv-font-body:    ui-sans-serif, system-ui, sans-serif;  /* REPLACE */
+  --mv-font-mono:    ui-monospace, monospace;               /* REPLACE if kit has one */
+
+  /* --- Motion signature (brand.motion_signature; genre defaults) ------- */
+  /* Default family: slow-in-fast-out entrances, symmetric camera.
+     Overridable — if the kit supplies curves, replace wholesale, don't mix. */
+  --mv-ease-out:   cubic-bezier(0.16, 1, 0.3, 1);   /* entrances / reveals   */
+  --mv-ease-ui:    cubic-bezier(0.25, 1, 0.5, 1);   /* UI events             */
+  --mv-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);  /* camera / transitions  */
+  --mv-dur-1: 150ms;   /* micro feedback   */
+  --mv-dur-2: 240ms;   /* standard UI event*/
+  --mv-dur-3: 400ms;   /* emphasized entry */
+  --mv-dur-4: 800ms;   /* scene transition */
+}
+
+/* --- Kit font files (brand.type.files) — uncomment and point at the
+       kit's actual woff2 assets; never substitute lookalike webfonts. ------
+@font-face {
+  font-family: "KitDisplay";
+  src: url("./fonts/kit-display.woff2") format("woff2");
+  font-weight: 600 800; font-display: block;
+}
+@font-face {
+  font-family: "KitBody";
+  src: url("./fonts/kit-body.woff2") format("woff2");
+  font-weight: 400 600; font-display: block;
+}
+--------------------------------------------------------------------------- */

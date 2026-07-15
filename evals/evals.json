@@ -1,0 +1,70 @@
+{
+  "skill_name": "landing-studio",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We have a Next.js repo, a product brief, three customer calls, a live app, and two reference sites. Build a launch landing page without replacing our component library. We need the page, a 12-second hero demo, SEO, analytics, and browser verification.",
+      "expected_output": "The orchestrator inspects project rules, runs evidence discovery first, records approvals, reuses the stack, treats motion as optional proof, implements the page, runs current SEO/AEO/GEO, defines consent-aware measurement, and verifies the real route in browsers.",
+      "files": [],
+      "assertions": [
+        "Creates or requests a canonical brand kit, discovery brief, and evidence ledger before claims or copy",
+        "Uses the existing Next.js/component system unless a documented gap justifies a dependency",
+        "Requires page-structure and copy approval before implementation",
+        "Verifies the built route with browser, accessibility, performance, journey, console, and network evidence",
+        "Does not treat motion, AEO, GEO, or analytics as magic conversion guarantees"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Audit our SaaS homepage for AEO. Add FAQ schema and HowTo schema everywhere, make each answer exactly 50 words, and create llms.txt so Google AI Mode ranks us.",
+      "expected_output": "The audit rejects obsolete or unsupported tactics, explains that Google deprecated FAQ rich results and removed HowTo rich results, avoids fixed answer length, states Google ignores llms.txt, and returns user-first answer and supported-schema improvements backed by current official sources.",
+      "files": [],
+      "assertions": [
+        "Rejects FAQPage and HowTo as Google rich-result requirements",
+        "Rejects a fixed 50-word formula and mandatory content chunking",
+        "States that Google Search ignores llms.txt for visibility",
+        "Verifies current official engine documentation before recommending schema",
+        "Preserves visible-content parity and evidence traceability"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our landing page has 8,000 monthly visits and weak demo bookings. Install heatmaps, record every session, add urgency, and use clickbait headlines. Tell me what users are thinking from scroll depth.",
+      "expected_output": "The CRO skill audits the existing stack and event quality, refuses deceptive patterns and mind-reading, defines a privacy/consent/masking plan, validates the conversion funnel, and creates testable hypotheses with guardrails and an appropriate experiment method.",
+      "files": [],
+      "assertions": [
+        "Does not equate heatmaps or scroll depth with attention, intent, or thought",
+        "Rejects clickbait, fake urgency, and dark patterns",
+        "Requires consent, masking, route exclusions, retention, and access controls for replay",
+        "Reuses the existing analytics stack before adding overlapping vendors",
+        "Defines a measurable hypothesis, primary metric, guardrails, and decision rule"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Make a premium paid-social ad and landing hero for a security product. We have real product capture, a licensed voice actor, and permission to use generative footage, but we cannot imply any certification we do not hold.",
+      "expected_output": "The motion skill selects and justifies production lanes, sources every claim, uses real product proof, handles generative rights/disclosure, creates poster/reduced-motion/caption states and native cutdowns, respects the performance budget, and verifies the CTA journey.",
+      "files": [],
+      "assertions": [
+        "Uses the approved generation policy without fabricating product behavior or certification",
+        "Maps every factual claim to evidence and includes legal/product approval",
+        "Creates an effective static poster and reduced-motion equivalent",
+        "Recomposes rather than blindly center-cropping required aspect ratios",
+        "Verifies rights, captions, browser/page performance, and CTA message match"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "QA the final campaign page before we deploy. The build passes, so just confirm it is good.",
+      "expected_output": "The QA skill refuses to infer release readiness from the build alone, tests the rendered page and primary conversion across representative browsers/viewports/preferences, checks accessibility, metadata, analytics/consent, console/network, and returns SHIP, CONDITIONAL, or BLOCK with evidence.",
+      "files": [],
+      "assertions": [
+        "Does not use a passing build as sufficient release evidence",
+        "Exercises the primary CTA/form through a safe verifiable completion",
+        "Tests mobile/desktop, keyboard, reduced motion, accessibility, console, and network",
+        "Checks raw HTML, metadata, supported schema, analytics, consent, and replay masking",
+        "Returns a severity-backed release decision and rerun cases"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+<!doctype html>
+<!--
+  END CARD — gated-CSS scene template (motion-video skill)
+  The CTA close: the calmest, highest-contrast scene in the film. One settle,
+  then designed stillness — held ≥2.5s, screenshot-able as a complete ask
+  (references/cta.md). The optional blinking caret is the loop re-hook device:
+  it lets the final frame rhyme with a typed-input hook (references/attention.md).
+
+  URL params:
+    brand=...     wordmark TEXT — only if the kit has no logo file. A real
+                  wordmark asset always wins; pass logo= instead.
+    logo=...      path/URL to the kit's wordmark file (svg/png)
+    verb=...      THE imperative — e.g. "Start free"   (from the kit, required)
+    dest=...      THE destination — e.g. "https://acme.com/signup"  (from the kit, required)
+    claim=...     optional quiet subline (the film's claim, restated)
+    caret=1       blinking input caret below the ask (loop re-hook)
+    preview=1     autoplay in a normal browser
+
+  Timeline (4s scene; rest by 1.4s → ≥2.6s of stillness):
+    0.20s  wordmark rises (dur-3)
+    0.55s  verb rises (dur-3)
+    0.75s  destination rises (dur-3)
+    0.95s  claim subline fades (if provided)
+    1.40s  ALL MOTION AT REST (only the caret blinks — a rest-state device)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>end-card</title>
+<link rel="stylesheet" href="brand.example.css">
+<link rel="stylesheet" href="brand.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    background: var(--mv-bg); color: var(--mv-fg);
+    display: grid; place-items: center; text-align: center;
+    font-family: var(--mv-font-display);
+    -webkit-font-smoothing: antialiased;
+  }
+  .stage { display: grid; gap: 3.2vmin; justify-items: center; padding: 0 8vw; }
+
+  .mark { opacity: 0; }
+  .mark img { height: 9vmin; width: auto; display: block; }
+  .mark .text { font-size: clamp(40px, 7vmin, 120px); font-weight: 800; letter-spacing: -0.02em; }
+
+  .ask { display: grid; gap: 1.2vmin; opacity: 0; }
+  .verb {
+    font-size: clamp(36px, 5.5vmin, 96px); font-weight: 700;
+    color: var(--mv-accent);            /* the accent's most load-bearing use */
+  }
+  .dest {
+    font-family: var(--mv-font-mono, var(--mv-font-body));
+    font-size: clamp(28px, 3.6vmin, 64px);   /* ≥48px @1080p — destination floor */
+    color: var(--mv-fg); opacity: 0;
+  }
+  .claim {
+    font-family: var(--mv-font-body); font-weight: 400;
+    font-size: clamp(18px, 2.2vmin, 34px); color: var(--mv-muted); opacity: 0;
+  }
+
+  .caretline {
+    margin-top: 2vmin; width: min(46vw, 640px); height: 2px;
+    background: var(--mv-border); position: relative; opacity: 0;
+  }
+  .caretline::after {
+    content: ""; position: absolute; left: 0; top: -2.4vmin;
+    width: 2px; height: 2.4vmin; background: var(--mv-fg);
+  }
+
+  /* ---- Gated motion ---- */
+  html.play .mark      { animation: rise-in var(--mv-dur-3) var(--mv-ease-out) 200ms forwards; }
+  html.play .ask       { animation: rise-in var(--mv-dur-3) var(--mv-ease-out) 550ms forwards; }
+  html.play .dest      { animation: rise-in var(--mv-dur-3) var(--mv-ease-out) 750ms forwards; }
+  html.play .claim     { animation: fade-in var(--mv-dur-3) var(--mv-ease-out) 950ms forwards; }
+  html.play .caretline { animation: fade-in var(--mv-dur-3) var(--mv-ease-out) 1100ms forwards; }
+  html.play .caretline::after { animation: blink 1.1s steps(1) 1400ms infinite; }
+
+  @keyframes rise-in { from { opacity: 0; transform: translateY(14px); }
+                       to   { opacity: 1; transform: translateY(0); } }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes blink   { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <div class="mark" id="mark"></div>
+    <div class="ask">
+      <div class="verb" id="verb"></div>
+    </div>
+    <div class="dest" id="dest"></div>
+    <p class="claim" id="claim" hidden></p>
+    <div class="caretline" id="caret" hidden></div>
+  </main>
+
+  <script>
+    const q = new URLSearchParams(location.search);
+    const mark = document.getElementById('mark');
+    if (q.get('logo')) {
+      const img = document.createElement('img');
+      img.src = q.get('logo'); img.alt = '';
+      mark.appendChild(img);
+    } else {
+      const t = document.createElement('div');
+      t.className = 'text';
+      t.textContent = q.get('brand') || 'Set ?logo= (preferred) or ?brand=';
+      mark.appendChild(t);
+      if (!q.get('brand'))
+        console.warn('motion-video: no wordmark supplied — the kit logo file is mandatory if a logo appears');
+    }
+    document.getElementById('verb').textContent = q.get('verb') || 'Set ?verb=';
+    document.getElementById('dest').textContent = q.get('dest') || 'Set ?dest=';
+    if (q.get('claim')) {
+      const c = document.getElementById('claim');
+      c.hidden = false; c.textContent = q.get('claim');
+    }
+    if (q.get('caret') === '1') document.getElementById('caret').hidden = false;
+    if (q.get('preview') === '1') {
+      document.fonts.ready.then(() =>
+        requestAnimationFrame(() => document.documentElement.classList.add('play')));
+    }
+  </script>
+</body>
+</html>

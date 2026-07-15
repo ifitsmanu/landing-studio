@@ -1,0 +1,223 @@
+<!doctype html>
+<!--
+  STAGED UI FRAME — gated-CSS scene template (motion-video skill)
+  A product window staged on a canvas, filmed with the two-tempo grammar:
+  slow camera push-in (film clock) over fast UI events (product clock).
+  Demonstrates: staging with shadow, reading-order stagger, cursor-as-actor
+  with hesitation beat + click ripple, origin-aware panel expand, chart draw.
+  Replace the placeholder UI with a rebuild of the real product per the beat
+  sheet (references/ui-cinematography.md) — the timing scaffold is the point.
+
+  URL params:
+    label=...     optional lower-third feature label (≤4 words)
+    cursor=0      hide the cursor (cursorless = automation)
+    preview=1     autoplay in a normal browser
+
+  Timeline (8s scene — a 4-bar phrase at 120 BPM):
+    0.00–8.00s  camera push-in 4% (ease-inout)              [film clock]
+    0.20s       window rises in (dur-3)
+    0.40s       sidebar items stagger, 60ms, reading order
+    0.80s       content cards stagger, 60ms
+    1.20–3.20s  cursor travels to the action (smoothed path)
+    3.20–3.45s  hesitation beat (250ms) — the human moment
+    3.45s       click ripple (dur-1)
+    3.60s       detail panel expands FROM the click origin (dur-2)
+    3.80–4.60s  chart line draws (dur-4)
+    5.00s       lower-third label rises (if provided)
+    hold        rest state — poster-grade
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>staged-ui-frame</title>
+<link rel="stylesheet" href="brand.example.css">
+<link rel="stylesheet" href="brand.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    background: var(--mv-bg); color: var(--mv-fg);
+    font-family: var(--mv-font-body);
+    display: grid; place-items: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------------- Camera (film clock) ---------------- */
+  .camera { display: grid; place-items: center; width: 100%; height: 100%; }
+  html.play .camera { animation: push-in 8s var(--mv-ease-inout) forwards; }
+  @keyframes push-in { from { transform: scale(1); } to { transform: scale(1.04); } }
+
+  /* ---------------- Staged window ---------------- */
+  .window {
+    width: 76vw; aspect-ratio: 16/10;
+    background: var(--mv-surface);
+    border: 1px solid var(--mv-border);
+    border-radius: 12px;
+    box-shadow: 0 40px 120px -20px rgb(0 0 0 / 0.5);
+    display: grid; grid-template-rows: auto 1fr;
+    overflow: hidden;
+    opacity: 0;
+    position: relative;
+  }
+  html.play .window { animation: rise-in var(--mv-dur-3) var(--mv-ease-out) 200ms forwards; }
+  @keyframes rise-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .chrome {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; border-bottom: 1px solid var(--mv-border);
+  }
+  .chrome i { width: 10px; height: 10px; border-radius: 50%; background: var(--mv-border); }
+  .chrome .url {
+    margin-left: 12px; flex: 1; text-align: center;
+    font-size: 12px; color: var(--mv-muted);
+    background: var(--mv-bg); border-radius: 6px; padding: 4px 12px;
+  }
+
+  .app { display: grid; grid-template-columns: 200px 1fr; min-height: 0; }
+  .side { border-right: 1px solid var(--mv-border); padding: 16px 12px; display: grid; gap: 6px; align-content: start; }
+  .side .item {
+    padding: 8px 10px; border-radius: 8px; font-size: 13px; color: var(--mv-muted);
+    opacity: 0;
+  }
+  .side .item.active { background: var(--mv-bg); color: var(--mv-fg); }
+  html.play .side .item {
+    animation: rise-in var(--mv-dur-2) var(--mv-ease-ui) forwards;
+    animation-delay: calc(400ms + var(--i) * 60ms);   /* reading order */
+  }
+
+  .main { padding: 20px; display: grid; gap: 14px; align-content: start; position: relative; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .card {
+    background: var(--mv-bg); border: 1px solid var(--mv-border);
+    border-radius: 10px; padding: 14px; opacity: 0;
+  }
+  html.play .card {
+    animation: rise-in var(--mv-dur-2) var(--mv-ease-ui) forwards;
+    animation-delay: calc(800ms + var(--i) * 60ms);
+  }
+  .card .k { font-size: 11px; color: var(--mv-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+  .card .v { font-size: 24px; font-weight: 600; font-family: var(--mv-font-display); margin-top: 4px;
+             font-variant-numeric: tabular-nums; }
+  .card .btn {
+    margin-top: 10px; display: inline-block; font-size: 12px; padding: 5px 10px;
+    border-radius: 999px; border: 1px solid var(--mv-border); color: var(--mv-fg);
+  }
+
+  /* Detail panel — expands FROM the clicked card (origin-aware) */
+  .panel {
+    background: var(--mv-bg); border: 1px solid var(--mv-border); border-radius: 10px;
+    padding: 16px; opacity: 0; transform: scale(0.94);
+    transform-origin: 16% 0%;                 /* the click origin: card 1 */
+  }
+  html.play .panel {
+    animation: panel-in var(--mv-dur-2) var(--mv-ease-ui) 3600ms forwards;
+  }
+  @keyframes panel-in { to { opacity: 1; transform: scale(1); } }
+  .panel .k { font-size: 12px; color: var(--mv-muted); margin-bottom: 8px; }
+  .panel svg { width: 100%; height: 120px; display: block; }
+  .panel polyline {
+    fill: none; stroke: var(--mv-accent); stroke-width: 2.5;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 1000; stroke-dashoffset: 1000;   /* accent = punctuation */
+  }
+  html.play .panel polyline {
+    animation: draw var(--mv-dur-4) var(--mv-ease-inout) 3800ms forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  /* ---------------- Cursor as actor ---------------- */
+  .cursor {
+    position: absolute; width: 24px; height: 24px; z-index: 10;
+    left: 0; top: 0; pointer-events: none;
+    /* travel → hesitation (keyframe hold) → click dip → settle */
+    transform: translate(60vw, 58vh);
+  }
+  html.play .cursor { animation: cursor-path 3600ms var(--mv-ease-inout) 1200ms forwards; }
+  @keyframes cursor-path {
+    0%   { transform: translate(60vw, 58vh); }
+    55%  { transform: translate(30vw, 36vh); }    /* travel, eased, smoothed  */
+    62%  { transform: translate(29vw, 35vh); }    /* micro-adjust             */
+    69%  { transform: translate(29vw, 35vh); }    /* HESITATION BEAT ~250ms   */
+    72%  { transform: translate(29vw, 35vh) scale(0.9); }  /* click dip      */
+    76%  { transform: translate(29vw, 35vh) scale(1); }
+    100% { transform: translate(29vw, 35vh); }    /* rest                     */
+  }
+  .ripple {
+    position: absolute; left: 29vw; top: 35vh; width: 44px; height: 44px;
+    margin: -10px 0 0 -10px; border-radius: 50%;
+    border: 2px solid var(--mv-accent); opacity: 0; z-index: 9;
+  }
+  html.play .ripple { animation: ripple 350ms var(--mv-ease-out) 3450ms; }
+  @keyframes ripple {
+    0% { opacity: 0.8; transform: scale(0.4); }
+    100% { opacity: 0; transform: scale(1.15); }
+  }
+
+  /* ---------------- Lower-third label ---------------- */
+  .label {
+    position: fixed; left: 6vw; bottom: 8vh; z-index: 20;
+    font-family: var(--mv-font-display); font-weight: 600;
+    font-size: clamp(24px, 3.8vmin, 56px);       /* ≥40px @1080p floor */
+    opacity: 0;
+  }
+  html.play .label { animation: rise-in var(--mv-dur-3) var(--mv-ease-out) 5000ms forwards; }
+</style>
+</head>
+<body>
+  <div class="camera">
+    <div class="window">
+      <div class="chrome"><i></i><i></i><i></i><div class="url">app.example.test — simulated data</div></div>
+      <div class="app">
+        <nav class="side">
+          <div class="item active" style="--i:0">Overview</div>
+          <div class="item" style="--i:1">Reports</div>
+          <div class="item" style="--i:2">Alerts</div>
+          <div class="item" style="--i:3">Settings</div>
+        </nav>
+        <section class="main">
+          <div class="cards">
+            <div class="card" style="--i:0"><div class="k">Weekly active</div><div class="v">12,480</div><span class="btn">Details</span></div>
+            <div class="card" style="--i:1"><div class="k">Conversion</div><div class="v">4.6%</div></div>
+            <div class="card" style="--i:2"><div class="k">Retention</div><div class="v">92%</div></div>
+          </div>
+          <div class="panel">
+            <div class="k">Weekly active — last 12 weeks (simulated)</div>
+            <svg viewBox="0 0 600 120" preserveAspectRatio="none">
+              <polyline points="0,95 55,88 110,90 165,74 220,78 275,60 330,64 385,46 440,52 495,30 550,34 600,18"/>
+            </svg>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <svg class="cursor" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M5 3 L19 12 L12 13.5 L9.5 20 Z" fill="var(--mv-fg)"
+          stroke="var(--mv-bg)" stroke-width="1.5"/>
+  </svg>
+  <div class="ripple"></div>
+  <div class="label" id="label" hidden></div>
+
+  <script>
+    const q = new URLSearchParams(location.search);
+    if (q.get('label')) {
+      const el = document.getElementById('label');
+      el.hidden = false; el.textContent = q.get('label');
+      if (q.get('label').split(' ').length > 4)
+        console.warn('motion-video: lower-third exceeds 4 words');
+    }
+    if (q.get('cursor') === '0') {           // cursorless = automation
+      document.querySelector('.cursor').remove();
+      document.querySelector('.ripple').remove();
+    }
+    if (q.get('preview') === '1') {
+      document.fonts.ready.then(() =>
+        requestAnimationFrame(() => document.documentElement.classList.add('play')));
+    }
+  </script>
+</body>
+</html>

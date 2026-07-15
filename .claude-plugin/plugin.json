@@ -1,0 +1,21 @@
+{
+  "name": "landing-studio",
+  "version": "0.2.0",
+  "description": "Evidence-first skills for researching, building, testing, and improving production landing pages: discovery, design, copy, motion, implementation, SEO/AEO/GEO, ethical CRO, browser QA, and campaigns.",
+  "author": { "name": "manu" },
+  "keywords": [
+    "landing-page",
+    "motion-video",
+    "launch-film",
+    "design-system",
+    "copywriting",
+    "seo",
+    "aeo",
+    "geo",
+    "marketing",
+    "conversion",
+    "browser-qa",
+    "cro",
+    "analytics"
+  ]
+}
