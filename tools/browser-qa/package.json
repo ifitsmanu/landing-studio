@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "axe-core": "4.12.1",
-    "playwright": "1.61.1"
+    "playwright": "1.62.0"
   }
 }
